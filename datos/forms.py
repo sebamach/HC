@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, TextInput
 from django import forms
 from models import *
 
@@ -6,6 +6,10 @@ from models import *
 class TituloForm(ModelForm):
 	class Meta:
 		model = Titulo
+		widgets = {
+			'descripcion': TextInput(attrs={ 'required':'true'}),
+			#'descripcion': TextInput(attrs={ 'class': '{required:true, maxlength:5}' }),
+		}
 		
 class EspecialidadForm(ModelForm):
 	class Meta:
