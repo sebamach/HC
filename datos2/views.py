@@ -20,7 +20,7 @@ nombresModelos={unicode("persona"):Persona,
 
 
 def alta_persona(request):
-	if request.user.has_perm('datos.add_'+modelo):
+	if request.user.has_perm('datos.add_'+'persona'):
 		DomicilioFormSet=modelformset_factory(Domicilio, extra=10, exclude=('persona','observacion',))	
 		#TelefonoFormSet=modelformset_factory(Telefono, extra=1, exclude=('persona','observacion',))	
 		if request.method=='POST':

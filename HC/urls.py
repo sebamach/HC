@@ -38,7 +38,7 @@ urlpatterns = patterns('',
 	url(r'^datos/editar/([a-z]+)/(\d+)$', 'datos.views.editar_'),
 	url(r'^datos/eliminar/([a-z]+)/(\d+)$', 'datos.views.eliminar_'),
 	
-	url(r'^datos2/alta/persona/$',alta_persona),
+	url(r'^datos2/alta/persona$',alta_persona),
 	url(r'^datos2/alta/([a-z]+)$', 'datos2.views.alta_'),
 	url(r'^datos2/lista/([a-z]+)$', 'datos2.views.lista_'),
 	url(r'^datos2/editar/([a-z]+)/(\d+)$', 'datos2.views.editar_'),
