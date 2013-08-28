@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{%block menu%}
+	
+{%endblock%}
+
+{%block cuerpo%}
+<div class="form-actions">
+	<h4>Cambio de Pass</h4>
+	<form  id='formulario' method='post' action=''>
+		{% csrf_token %}
+		{{form|bootstrap}}
+		
+		<div class="btn-group">
+			<button type="submit" class="btn btn-primary">Confirmar</button>
+		</div>		
+	</form>	
+</div>
+{%endblock%}
+{%block footer%}
+
+{%endblock%}

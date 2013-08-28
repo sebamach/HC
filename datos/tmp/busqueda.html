@@ -1,0 +1,28 @@
+
+<html lang="en">
+<head>
+	<title>Busqueda{% if query %} Resultados{% endif %}</title>
+</head>
+<body>
+	<h1>Busqueda</h1>
+	<form action="." method="GET">
+		<label for="q">Busqueda: </label>
+		<input type="text" name="q" value="{{ query|escape }}">
+		<input type="submit" value="Search">
+	</form>
+	
+	{% if query %}
+		<h2>Resultados para "{{ query|escape }}":</h2>
+		
+		{% if resultados %}
+			<ul>
+			{% for profesion in resultados %}
+				<li>{{ profesion|escape }}</l1>
+			{% endfor %}
+			</ul>
+			{% else %}
+				<p>No hay resultados</p>
+		{% endif %}
+	{% endif %}
+</body>
+</html>

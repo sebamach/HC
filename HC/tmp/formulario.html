@@ -1,0 +1,18 @@
+{%load bootstrap%}
+<h4>{{nombre}}</h4>
+
+<form class='form-signin' id='formulario' method='post' action=''>
+	
+{% csrf_token %}
+{{formulario|bootstrap}}
+
+{% block extraform %} 
+
+{% endblock %}
+
+<div class="btn-group">
+	<button type="submit" class="btn btn-primary">Guardar</button>
+	<button type="reset" class="btn btn-primary">Reset</button>
+	<a type="cancel" class="btn btn-primary" href='{%block linkcancelar%}{%endblock%}/lista/{{n}}' >Cancelar</a>
+</div>	
+</form>

@@ -1,0 +1,16 @@
+<h4>{{nombre}}</h4>
+	<table class='table table-condensed table-striped'>
+		{% for dato in datos %}
+		<tr>
+			<td>
+			  {{dato}}
+			</td>
+			<td>
+				<a href='/{%block modulo1%}{%endblock%}/editar/{{n}}/{{dato.pk}}' class="label label-success">Editar<i class='icon-pencil icon-white'></i></a>
+				<a href='/{%block modulo2%}{%endblock%}/eliminar/{{n}}/{{dato.pk}}' class="label label-important">Eliminar<i class='icon-trash icon-white'></i></a>
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+		<a href='/{%block modulo3%}{%endblock%}/alta/{{n}}' role='button' class='btn' data-toggle='modal'>Agregar Nuevo</a>
+		

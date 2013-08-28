@@ -1,0 +1,10 @@
+syntax: glob
+
+*.elc
+*.pyc
+*~
+*.db
+*.egg-info
+dist/*
+build/*
+docs/_build/*

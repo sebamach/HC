@@ -1,0 +1,35 @@
+{%extends 'sub_formulario_datos2.html'%}
+
+{% block extraform %}
+
+	
+	{{ formulario2.management_form }}
+	
+	<!-- sheepIt Form -->
+	<div id="sheepItForm">
+	 
+	  <!-- Form template-->
+	  <div id="sheepItForm_template">		
+		{{ formulario2.empty_form.as_table }}		
+	  </div>
+	  <!-- /Form template-->
+	   
+	  <!-- No forms template -->
+	  <div id="sheepItForm_noforms_template">No hay domicilios</div>
+	  <!-- /No forms template-->
+	   
+	  <!-- Controls -->
+	  <div id="sheepItForm_controls">
+		<div id="sheepItForm_add"><a><span>Agregar Domicilio</span></a></div>
+		<div id="sheepItForm_remove_last"><a><span>Remover</span></a></div>
+		<div id="sheepItForm_remove_all"><a><span>Remover todos</span></a></div>
+	  </div>
+	  <!-- /Controls -->
+	  
+	</div>
+	<!-- /sheepIt Form -->
+	
+	
+	<br/>	
+
+{% endblock %}

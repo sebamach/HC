@@ -1,0 +1,48 @@
+{%extends 'sub_base_datos2.html'%}
+
+{% block extra_head %}
+
+<script type="text/javascript" src="/static/js/jquery-1.4.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.sheepItPlugin-1.1.1.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+     
+    var sheepItForm = $('#sheepItForm').sheepIt({
+        separator: '',
+        allowRemoveLast: true,
+        allowRemoveCurrent: true,
+        allowRemoveAll: true,
+        allowAdd: true,
+        allowAddN: true,
+        maxFormsCount: 10,
+        minFormsCount: 1,
+        iniFormsCount: 1
+    });
+ 
+});
+
+</script>
+<style>
+
+a {
+    text-decoration:underline;
+    color:#00F;
+    cursor:pointer;
+}
+
+#sheepItForm_controls div, #sheepItForm_controls div input {
+    float:left;    
+    margin-right: 10px;
+}
+
+
+</style>
+
+{% endblock %}
+
+{%block cuerpo%}
+
+{% include 'sub_formulario_personas.html' %}
+
+{%endblock%}
