@@ -46,7 +46,7 @@ urlpatterns = patterns('',
 	
 	url(r'^usuarios/alta/$', nuevo_usuario),	
 	url(r'^usuarios/salir/$', logout_view),
-	url(r'^usuarios/lista/$', 'usuarios.views.lista_'),		
+	url(r'^usuarios/lista/usuario/$', 'usuarios.views.lista_'),		
 	url(r'^usuarios/bloqueo/([a-z]+)/(\d+)$', 'usuarios.views.bloqueo_usuario'),
 	url(r'password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'pass_reset.html'}),
 	url(r'^password-changed/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'succes.html'}),
