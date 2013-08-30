@@ -1,0 +1,44 @@
+{%extends 'sub_formulario_datos2.html'%}
+
+{% load bootstrap %}
+{% block extraform %}
+	
+	{{ formulario2.management_form }}
+	
+	
+		<table>
+		<thead>
+			<tr>
+				{% for field in formulario2.empty_form %}
+					<th>{{field.label}}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		
+		<tbody>
+			
+		
+			{% for form in formulario2 %} 
+				<tr>
+				{% for field in form %}
+				
+					<td><div class="input-mini">{{ field }}</div></td>
+				
+				{% endfor %}
+				</tr>
+				
+			{% endfor %}
+			
+			
+		
+		</tbody>
+		</table>
+		
+	
+	
+
+		
+
+	
+{% endblock %}
+
