@@ -1,7 +1,7 @@
 {% load bootstrap %}
 
 <div class="control-group{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
-	<table class="table table-condensed">
+	
     {% if field|is_checkbox %}
         <div class="controls">
             <label class="checkbox">
@@ -57,5 +57,5 @@
         </div>
 		
     {% endif %}{% endif %}
-    </table>
+   
 </div>
