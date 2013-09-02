@@ -1,5 +1,37 @@
-<h4>{{nombre}}</h4>
-	<table class='table table-condensed table-striped'>
+{%block extra_head%}
+<script >
+$(document).ready(function() 
+    { 
+        $("#table").tablesorter(); 
+    } 
+);
+</script>
+<script >
+  $(function() {
+    $("#table").tablesorter({ sortList: [[1,0]] });
+  });
+</script>
+ 
+   
+{%endblock%}
+<h4>{{nombre.upper}}</h4>
+
+<div class="input-append">	
+			<form class="form-search" method= 'GET' action='/{%block modulo4%}{%endblock%}/busqueda/{{n}}'>
+					<input type="text" name="q" value="{{ query|escape }}" class="input-medium search-query">
+					<button type="submit" class="btn">Search</button>
+					<a href='/{%block linkcancelar%}{%endblock%}/lista/{{n}}' class="btn">Resetear<i class='icon-trash icon-white'></i></a>
+			</form>
+</div>
+
+{% if datos %}
+	<table class='table table-condensed table-striped '  id='table'>
+	<thead>
+		<tr> 
+		<th>Ordenar</th> 
+		</tr> 
+	</thead>
+		
 		{% for dato in datos %}
 		<tr>
 			<td>
@@ -11,6 +43,35 @@
 			</td>
 		</tr>
 		{% endfor %}
-	</table>
-		<a href='/{%block modulo3%}{%endblock%}/alta/{{n}}' role='button' class='btn' data-toggle='modal'>Agregar Nuevo</a>
 		
+	</table>
+	
+	<div class="pagination pagination-small">
+			<ul>
+				{% if datos.has_previous %}
+					<li><a href="?page={{ contacts.previous_page_number }}">Previa</a></li>
+				{% else %}
+					<li class="disabled"><a href="?page={{ contacts.previous_page_number }}">Previa</a></li>
+				{% endif %}
+				
+				<li class="disabled"><a> Pagina {{ datos.number }} de {{ datos.paginator.num_pages }}.</a></li>
+			
+				{% if datos.has_next %}
+					<li><a href="?page={{ datos.next_page_number }}">Siguiente</a></li>
+				{% else %}
+					<li class="disabled"><a >Siguiente</a></li>
+				{% endif %}
+				
+			</ul>
+		</div>	
+{% else %}
+	<div class="alert">
+		<strong> No se encontraron {{nombre.upper}} para mostrar. </strong> 
+	</div>
+{% endif%}
+
+
+	
+		<a href='/{%block modulo3%}{%endblock%}/alta/{{n}}' role='button' class='btn' data-toggle='modal'>Agregar Nuevo</a>
+
+	

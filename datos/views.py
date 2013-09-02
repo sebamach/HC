@@ -12,19 +12,7 @@ from django.contrib.auth.decorators import permission_required
 def menu(request):
 	return render_to_response('index.html')
 
-def busqueda(request):
-	query = request.GET.get('q', '')
-	if query:
-		qset = (
-		Q(descripcion__icontains=query)
-		)
-		resultados = Profesion.objects.filter(qset).distinct()
-	else:
-		resultados = []
-	return render_to_response("busqueda.html", {
-		"resultados": resultados,
-		"query": query
-	})
+
 
 
 nombresFormularios={unicode("titulo"):TituloForm,
@@ -57,6 +45,7 @@ nombresModelos={unicode("titulo"):Titulo,
 				
 			
 
+
 def alta_(request, modelo):
 	#if request.user.has_module_perms('datos'):
 	if request.user.has_perm('datos.add_'+modelo):
@@ -66,9 +55,6 @@ def alta_(request, modelo):
 
 def lista_(request,modelo):
 	return lista(request,nombresModelos[modelo],'lista_datos.html')
-	
-		
-
 
 def editar_(request, modelo, id_profesion):
 	if request.user.has_perm('datos.change_'+modelo):
@@ -82,3 +68,7 @@ def eliminar_(request, modelo, id_domicilio):
 		return eliminar(request,  nombresModelos[modelo], id_domicilio,"datos")	
 	else:
 		return HttpResponseRedirect('/403')
+
+
+def busqueda_(request,modelo):
+	return busqueda(request,nombresModelos[modelo],'lista_datos.html')

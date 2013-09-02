@@ -1,7 +1,0 @@
-Core Comitters:
-
-* Vasil Vangelovski
-
-Contributors:
-
-* Andy Dustman

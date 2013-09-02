@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def alta(request, clase_name, form_name, modulo, pagina):
@@ -16,7 +17,18 @@ def alta(request, clase_name, form_name, modulo, pagina):
 
 
 def lista(request, clase_name, pagina):
-	datos = clase_name.objects.all()
+	datos_lista = clase_name.objects.all()
+	paginator = Paginator(datos_lista, 5) # Show 25 contacts per page
+
+	page = request.GET.get('page')
+	try:
+		datos = paginator.page(page)
+	except PageNotAnInteger:
+     
+		datos = paginator.page(1)
+	except EmptyPage:
+       
+		datos = paginator.page(paginator.num_pages)
 	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name},
 							context_instance=RequestContext(request))
 
@@ -40,3 +52,31 @@ def editar(request, id_domicilio, clase_name, form_name, modulo, pagina):
 		result = clase_name.objects.get(id=id_domicilio)
 		formulario = form_name(instance=result)
 	return render_to_response(pagina, {'formulario': formulario}, context_instance=RequestContext(request))
+
+
+def busqueda(request, clase_name, pagina):
+	query = request.GET.get('q', '')
+	if query:
+		qset = (
+		Q(descripcion__icontains=query)
+		)
+		resultados = clase_name.objects.filter(qset).distinct()
+	else:
+		resultados = []
+		
+	paginator = Paginator(resultados, 5) # Show 25 contacts per page
+
+	page = request.GET.get('page')
+	try:
+		datos = paginator.page(page)
+	except PageNotAnInteger:
+     
+		datos = paginator.page(1)
+	except EmptyPage:
+       
+		datos = paginator.page(paginator.num_pages)
+	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name},
+							context_instance=RequestContext(request))
+	
+		
+	
