@@ -78,26 +78,27 @@ def eliminar_(request, modelo, id_domicilio):
 def editar_persona(request, id_persona):
 	if request.user.has_perm('datos.add_'+'persona'):
 		DomicilioFormSet=modelformset_factory(Domicilio, extra=0, form=DomicilioForm, exclude=('persona','observacion',))	
-		#TelefonoFormSet=modelformset_factory(Telefono, extra=1, exclude=('persona','observacion',))	
+		TelefonoFormSet=modelformset_factory(Telefono, form=TelefonoForm, extra=0, exclude=('persona','observacion',))	
 		if request.method=='POST':
 			persona = Persona.objects.get(id=id_persona)
 			formulario1=PersonaForm(request.POST, instance = persona)			
 			queryset=Domicilio.objects.all()
 			formulario2=DomicilioFormSet(request.POST, queryset=queryset.filter(persona = persona),prefix='domicilios',initial=[{'tipo_domicilio': u'legal','direccion': u'hola','localidad': u'rawson'}])
-			#formulario3=TelefonoFormSet(request.POST, queryset=Domicilio.objects.none(),prefix='telefonos',)
+			queryset=Telefono.objects.all()
+			formulario3=TelefonoFormSet(request.POST, queryset=queryset.filter(persona = persona),prefix='telefonos',initial=[{'tipo_telefono': u'legal','codigo_area': u'hola','numero': u'rawson'}])
 			if (formulario1.is_valid() and formulario2.is_valid()):
 				domicilios=formulario2.save(commit=False)
-				#telefonos=formulario3.save(commit=False)
+				telefonos=formulario3.save(commit=False)
 				persona=formulario1.save()				
 				
 				for domicilio in domicilios:
 					domicilio.persona=persona
 					domicilio.save()
-				"""	
+				
 				for telefono in telefonos:
 					telefono.persona=persona
 					telefono.save()
-				"""
+				
 					
 				return HttpResponseRedirect('/datos2/lista/persona')
 		else:
@@ -105,8 +106,9 @@ def editar_persona(request, id_persona):
 			formulario1=PersonaForm(instance = persona)
 			queryset=Domicilio.objects.all()			
 			formulario2=DomicilioFormSet(queryset = queryset.filter(persona = persona),prefix='domicilios')
-			#formulario3=TelefonoFormSet(queryset=Domicilio.objects.none(),prefix='telefonos',)			
-		return render_to_response('formulario_edit_personas.html', {'formulario': formulario1, 'formulario2': formulario2, 'nombre': Persona._meta.verbose_name_plural, 'n': Persona._meta.verbose_name,}, context_instance=RequestContext(request))
+			queryset=Telefono.objects.all()
+			formulario3=TelefonoFormSet(queryset=queryset.filter(persona = persona),prefix='telefonos',initial=[{'tipo_telefono': u'legal','codigo_area': u'hola','numero': u'rawson'}])			
+		return render_to_response('formulario_edit_personas.html', {'formulario': formulario1, 'formulario2': formulario2, 'formulario3': formulario3, 'nombre': Persona._meta.verbose_name_plural, 'n': Persona._meta.verbose_name,}, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/403')
 		

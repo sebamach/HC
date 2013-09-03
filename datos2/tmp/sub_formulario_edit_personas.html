@@ -2,6 +2,11 @@
 
 {% block extra_head %}
 
+	<style>
+	.form-horizontal .control-group {
+	margin-bottom: 5px;
+	}
+	</style>
 {% endblock %}
 
 
@@ -27,6 +32,40 @@
 			
 		
 			{% for form in formulario2 %} 
+				<tr>
+				{% for field in form %}
+				
+					<td>{{ field }}</td>
+				
+				{% endfor %}
+				</tr>
+				
+			{% endfor %}
+			
+			
+		
+		</tbody>
+		</table>
+		
+<br>
+
+
+	{{ formulario3.management_form }}
+	
+	
+		<table>
+		<thead>
+			<tr>
+				{% for field in formulario3.empty_form %}
+					<th>{{field.label}}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		
+		<tbody>
+			
+		
+			{% for form in formulario3 %} 
 				<tr>
 				{% for field in form %}
 				
