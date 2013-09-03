@@ -45,6 +45,7 @@ urlpatterns = patterns('',
 	url(r'^datos2/lista/([a-z]+)$', 'datos2.views.lista_'),
 	url(r'^datos2/editar/([a-z]+)/(\d+)$', 'datos2.views.editar_'),
 	url(r'^datos2/eliminar/([a-z]+)/(\d+)$', 'datos2.views.eliminar_'),
+	url(r'^datos2/busqueda/([a-z]+)$', 'datos2.views.busqueda_'),
 	
 	url(r'^usuarios/alta/$', nuevo_usuario),	
 	url(r'^usuarios/salir/$', logout_view),

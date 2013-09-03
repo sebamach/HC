@@ -8,28 +8,37 @@ class PersonaForm(ModelForm):
 		
 class DomicilioForm(ModelForm):
 	class Meta:
-		model = Domicilio
-
+		model = Domicilio		
+		widgets = {
+			'tipo_domicilio': Select(attrs={ 'class':'input-small'}),
+			'direccion': TextInput(attrs={ 'class':'input-medium'}),
+			'localidad': Select(attrs={ 'class':'input-small'}),
+		}
+		
 class PartialDomicilioForm(ModelForm):
 	class Meta:
 		model = Domicilio
 		exclude = ('persona','observacion')
-
-class ClonableDomicilioForm(ModelForm):
-	class Meta:
-		model = Domicilio
-		exclude = ('persona','observacion')
-		widgets = {
-			'tipo_domicilio': Select(attrs={'id': "id_domicilios-#index#-direccion", 'name': "id_domicilios-#index#-direccion",}),
-			'direccion': TextInput(attrs={'id': "id_domicilios-#index#-direccion", 'name': "id_domicilios-#index#-direccion",}),
-			'localidad': Select(attrs={'id': "id_domicilios-#index#-direccion", 'name': "id_domicilios-#index#-direccion",}),
-		}
 		
 class TelefonoForm(ModelForm):
 	class Meta:
 		model = Telefono
+		widgets = {
+			'tipo_telefono': Select(attrs={ 'class':'input-small'}),
+			'codigo_area': TextInput(attrs={ 'class':'input-small'}),
+			'numero': TextInput(attrs={ 'class':'input-medium'}),
+		}
 
 class PartialTelefonoForm(ModelForm):
 	class Meta:
 		model = Telefono
-		exclude = ('persona','observacion')
+		exclude = ('persona','observacion')		
+		
+from django.forms.models import BaseModelFormSet
+
+class BaseDomicilioFormSet(BaseModelFormSet):
+    def add_fields(self, form, index):
+        super(BaseDomicilioFormSet, self).add_fields(form, index)
+        # customize your fields .. e.g. to change the size of a InputText
+        self.fields['tipo_domicilio'].widget.attrs['class'] = 'span1'
+

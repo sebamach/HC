@@ -44,6 +44,10 @@
 			  padding: 2px 8px;
 			  margin-top: 2px;
 			}
+			
+			.form-horizontal .control-group {
+			margin-bottom: 5px;
+			}
 		</style>
 		{%endblock%}
 
@@ -60,11 +64,11 @@
 
 		{% csrf_token %}
 		<div class="row">
-			<div class="span6">
+			<div class={% block span_form %}"span12"{% endblock %}>
 			{{formulario|bootstrap}}
 			</div>
 			
-			<div class="span2">
+			<div class={% block span_extraform %}{% endblock %}>
 			{% block extraform %} 
 
 			{% endblock %}

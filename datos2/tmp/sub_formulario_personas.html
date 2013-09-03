@@ -1,24 +1,26 @@
 {%extends 'sub_formulario_datos2.html'%}
 
+{% block span_form %}"span6"{% endblock %}
+
+{% block span_extraform %}"span6"{% endblock %}
+
 {% block extraform %}
 
 	
 	{{ formulario2.management_form }}
 	
+
 	<!-- sheepIt Form -->
 	
 	<div>		
 		<div id="sheepItForm">
-		 
-		  <!-- Form template-->	  
-		  <div id="sheepItForm_template">	
-		  <fieldset>
-			<legend><div class="controls">Domicilio</div></legend>
-			{%load bootstrap%}
-			{{ formulario2.empty_form|bootstrap }}
-		  </fieldset>
-		  </div>
-		  <!-- /Form template-->
+			
+		<!-- Form template-->	  
+		<div id="sheepItForm_template">	
+			{% include 'domicilioclon.html' %}		 
+		</div>
+		<!-- /Form template-->
+
 		   
 		  <!-- No forms template -->
 		  <div id="sheepItForm_noforms_template">No hay domicilios</div>
@@ -37,7 +39,6 @@
 		</div>
 		<!-- /sheepIt Form -->
 	</div>
-	
 	
 	<br/>	
 

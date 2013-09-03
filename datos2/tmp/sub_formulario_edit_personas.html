@@ -1,5 +1,13 @@
 {%extends 'sub_formulario_datos2.html'%}
 
+{% block extra_head %}
+
+{% endblock %}
+
+
+{% block span_form %}"span8"{% endblock %}
+{% block span_extraform %}"span4"{% endblock %}
+
 {% load bootstrap %}
 {% block extraform %}
 	
@@ -22,7 +30,7 @@
 				<tr>
 				{% for field in form %}
 				
-					<td><div class="input-mini">{{ field }}</div></td>
+					<td>{{ field }}</td>
 				
 				{% endfor %}
 				</tr>
