@@ -38,6 +38,11 @@ urlpatterns = patterns('',
 	url(r'^datos/editar/([a-z]+)/(\d+)$', 'datos.views.editar_'),
 	url(r'^datos/eliminar/([a-z]+)/(\d+)$', 'datos.views.eliminar_'),
 	url(r'^datos/busqueda/([a-z]+)$', 'datos.views.busqueda_'),
+	url(r'^datos/ajax/([a-z]+)$', 'datos.views.ajax_'),
+	url(r'^/ajax/url/([a-z]+)$', 'datos.views.autocompletar_',),
+# Autocomplete
+	url(r'^datos/lista/get_name/([a-z]+)/$', 'datos.views.autocompletar_', ),	
+	
 	
 	url(r'^datos2/alta/persona$',alta_persona),
 	url(r'^datos2/editar/persona/(\d+)$',editar_persona),

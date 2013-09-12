@@ -1,24 +1,42 @@
 {%block extra_head%}
+<style type="text/css">
+.ui-autocomplete-loading {
+  background: url('/images/ui-autocomplete_16x16.gif') no-repeat right center;
+}
+</style>
 <script >
-$(document).ready(function() 
+$(function() 
     { 
-        $("#table").tablesorter(); 
+       $("#q").autocomplete({
+		source: "/datos/lista/get_name/{{n}}/",
+		minLength: 2
+	
+		});
     } 
+	
 );
 </script>
 <script >
   $(function() {
     $("#table").tablesorter({ sortList: [[1,0]] });
   });
+ 
+}
 </script>
+
+
+
  
    
 {%endblock%}
+
 <h4>{{nombre.upper}}</h4>
 
+
 <div class="input-append">	
+			
 			<form class="form-search" method= 'GET' action='/{%block modulo4%}{%endblock%}/busqueda/{{n}}'>
-					<input type="text" name="q" value="{{ query|escape }}" class="input-medium search-query">
+					<input type="text" id="q" value="{{ query|escape }}"  name="q"  />	
 					<button type="submit" class="btn">Search</button>
 					<a href='/{%block linkcancelar%}{%endblock%}/lista/{{n}}' class="btn">Resetear<i class='icon-trash icon-white'></i></a>
 			</form>
@@ -74,4 +92,5 @@ $(document).ready(function()
 	
 		<a href='/{%block modulo3%}{%endblock%}/alta/{{n}}' role='button' class='btn' data-toggle='modal'>Agregar Nuevo</a>
 
-	
+
+

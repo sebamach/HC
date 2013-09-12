@@ -1,4 +1,7 @@
 {%extends 'base.html'%}
 	{% block cuerpo%}
-		Sin Privilegios Suficientes {{user.username}}
+		<div class="alert">
+			<strong> Sin Privilegios Suficientes {{user.username.upper}} </strong> 
+		</div>
+	
 	{% endblock %}

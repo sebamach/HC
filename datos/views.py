@@ -9,6 +9,7 @@ from stronghold.decorators import public
 from django.contrib.auth.decorators import permission_required
 
 
+
 def menu(request):
 	return render_to_response('index.html')
 
@@ -72,3 +73,9 @@ def eliminar_(request, modelo, id_domicilio):
 
 def busqueda_(request,modelo):
 	return busqueda(request,nombresModelos[modelo],'lista_datos.html')
+
+def ajax_(request,modelo):
+	return ajax(request,nombresModelos[modelo],'lista_datos.html')
+
+def autocompletar_(request,modelo):
+	return autocompletar(request,nombresModelos[modelo])

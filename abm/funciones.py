@@ -3,6 +3,10 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import json
+
+
+
 
 
 def alta(request, clase_name, form_name, modulo, pagina):
@@ -58,7 +62,7 @@ def busqueda(request, clase_name, pagina):
 	query = request.GET.get('q', '')
 	if query:
 		qset = (
-		Q(descripcion__icontains=query)
+			Q(descripcion__icontains=query)
 		)
 		resultados = clase_name.objects.filter(qset).distinct()
 	else:
@@ -77,6 +81,19 @@ def busqueda(request, clase_name, pagina):
 		datos = paginator.page(paginator.num_pages)
 	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name},
 							context_instance=RequestContext(request))
-	
 		
-	
+def autocompletar(request, clase_name):
+	if request.is_ajax() or True:
+		results = []
+		q = request.GET.get('term', '') #jquery-ui.autocomplete parameter
+		name_list = clase_name.objects.filter(Q(descripcion__startswith = q )|Q(descripcionReducida__startswith = q)).values('id','descripcion', 'descripcionReducida')[:10]
+		for descripcion in name_list:
+			descripcion_json = {}
+			descripcion_json['id'] = descripcion['id']
+			descripcion_json['value'] = descripcion['descripcion']+descripcion['descripcionReducida']
+			results.append(descripcion_json)
+		data = json.dumps(results)
+	else:
+		data = 'fail'
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)

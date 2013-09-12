@@ -115,3 +115,8 @@ def editar_persona(request, id_persona):
 def busqueda_(request,modelo):
 	return busqueda(request,nombresModelos[modelo],'lista_datos2.html')
 		
+def autocompletar_(request,modelo):
+	return autocompletar(request,nombresModelos[modelo])
+	
+def autocompletar_nombre_apellido(request,modelo):
+	return autocompletar(request,nombresModelos[modelo])
