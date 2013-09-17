@@ -4,6 +4,8 @@ from django.template import RequestContext
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
+import operator
+from django.db.models.fields.related import ForeignKey
 
 
 
@@ -32,8 +34,9 @@ def lista(request, clase_name, pagina):
 		datos = paginator.page(1)
 	except EmptyPage:
        
-		datos = paginator.page(paginator.num_pages)
-	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name},
+		datos = paginator.page(paginator.num_pages)		
+
+	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural, 'n': clase_name()._meta.verbose_name},
 							context_instance=RequestContext(request))
 
 def eliminar(request, clase_name, id_domicilio, modulo):
@@ -60,10 +63,37 @@ def editar(request, id_domicilio, clase_name, form_name, modulo, pagina):
 
 def busqueda(request, clase_name, pagina):
 	query = request.GET.get('q', '')
-	if query:
+	if query:		
+	
+		#creo listado de objetos Q, un Q por cada atributo del modelo
+		
+		search_type = 'startswith'				
+		Qs=[]		
+		for field in clase_name._meta.fields:	
+			if (str(field.get_internal_type).find('ForeignKey')==-1):
+				atributo_variable=field.name			
+				filter = atributo_variable + '__' + search_type
+				Qs.append(Q(**{ filter:query}))
+		
+		"""
+		search_type = 'icontains'				
+		Qs=[]
+		x = iter(clase_name._meta.fields)		
+		while (1):			
+			item = x.next
+			if (item is not None):
+				atributo_variable=item.name
+				filter = atributo_variable + '__' + search_type
+				Qs.append(Q(**{ filter:query}))
+			else:
+				break
+		"""
+		
+				
 		qset = (
-			Q(descripcion__icontains=query)
+			reduce(operator.or_, Qs)
 		)
+		
 		resultados = clase_name.objects.filter(qset).distinct()
 	else:
 		resultados = []
@@ -90,7 +120,7 @@ def autocompletar(request, clase_name):
 		for descripcion in name_list:
 			descripcion_json = {}
 			descripcion_json['id'] = descripcion['id']
-			descripcion_json['value'] = descripcion['descripcion']+descripcion['descripcionReducida']
+			descripcion_json['value'] = descripcion['descripcion']
 			results.append(descripcion_json)
 		data = json.dumps(results)
 	else:
