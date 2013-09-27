@@ -14,6 +14,9 @@ from django.db.models.fields.related import ForeignKey
 def alta(request, clase_name, form_name, modulo, pagina):
 	if request.method=='POST':
 		formulario=form_name(request.POST)
+		for field in formulario:
+			field = field.upper
+			
 		if formulario.is_valid():
 			formulario.save()
 			return HttpResponseRedirect('/'+modulo+'/lista/'+clase_name()._meta.verbose_name)
@@ -58,8 +61,7 @@ def editar(request, id_domicilio, clase_name, form_name, modulo, pagina):
 	else:
 		result = clase_name.objects.get(id=id_domicilio)
 		formulario = form_name(instance=result)
-	return render_to_response(pagina, {'formulario': formulario}, context_instance=RequestContext(request))
-
+	return render_to_response(pagina, {'formulario': formulario, 'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name}, context_instance=RequestContext(request))
 
 def busqueda(request, clase_name, pagina):
 	query = request.GET.get('q', '')
@@ -74,22 +76,6 @@ def busqueda(request, clase_name, pagina):
 				atributo_variable=field.name			
 				filter = atributo_variable + '__' + search_type
 				Qs.append(Q(**{ filter:query}))
-		
-		"""
-		search_type = 'icontains'				
-		Qs=[]
-		x = iter(clase_name._meta.fields)		
-		while (1):			
-			item = x.next
-			if (item is not None):
-				atributo_variable=item.name
-				filter = atributo_variable + '__' + search_type
-				Qs.append(Q(**{ filter:query}))
-			else:
-				break
-		"""
-		
-				
 		qset = (
 			reduce(operator.or_, Qs)
 		)
@@ -113,7 +99,7 @@ def busqueda(request, clase_name, pagina):
 							context_instance=RequestContext(request))
 		
 def autocompletar(request, clase_name):
-	if request.is_ajax() or True:
+	if request.is_ajax():
 		results = []
 		q = request.GET.get('term', '') #jquery-ui.autocomplete parameter
 		name_list = clase_name.objects.filter(Q(descripcion__startswith = q )|Q(descripcionReducida__startswith = q)).values('id','descripcion', 'descripcionReducida')[:10]

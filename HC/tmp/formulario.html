@@ -52,8 +52,11 @@
 		{%endblock%}
 
 
-
+{% if formulario.is_multipart %}
+<form enctype="multipart/form-data" class="form-horizontal" id='formulario' method='post' action=''>
+{% else %}
 <form class="form-horizontal" id='formulario' method='post' action=''>
+{% endif %}
 	<fieldset>
 	
 		<legend>

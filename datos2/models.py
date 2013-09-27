@@ -15,6 +15,7 @@ class Persona (models.Model):
 	fecha_de_nacimiento = models.DateField("FECHA DE NACIMIENTO")
 	observacion = models.CharField("OBSERVACION", max_length=20)
 	
+	
 	def __str__(self):
 		return self.apellido+', '+self.nombre +' ('+str(self.numero_documento)+')'
 		
@@ -44,6 +45,10 @@ class Domicilio (models.Model):
 	def __str__(self):
 		return self.direccion
 		
+class FotoPerfil (models.Model):
+	foto = models.ImageField(upload_to = 'fotitos')
+	persona = models.ForeignKey(Persona)		
+
 
 
 

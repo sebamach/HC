@@ -55,10 +55,17 @@ $(function()
 			<td>
 			  {{dato}}
 			</td>
+			{% if not n == 'persona' %}
 			<td>
 				<a href='/{%block modulo1%}{%endblock%}/editar/{{n}}/{{dato.pk}}' class="label label-success">Editar<i class='icon-pencil icon-white'></i></a>
 				<a href='/{%block modulo2%}{%endblock%}/eliminar/{{n}}/{{dato.pk}}' class="label label-important">Eliminar<i class='icon-trash icon-white'></i></a>
 			</td>
+			{% else %}
+			<td>
+				<a href='/{%block modulo5%}{%endblock%}/seleccionar/{{n}}/{{dato.pk}}' class="label label-success">Seleccionar<i class='icon-pencil icon-white'></i></a>
+				
+			</td>
+			{% endif %}
 		</tr>
 		{% endfor %}
 		

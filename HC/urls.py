@@ -13,6 +13,7 @@ from datos2.views import *
 from usuarios.views import *
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from ajax_select import urls as ajax_select_urls
 admin.autodiscover()
 
 #profesion_info = {"model": Profesion}
@@ -46,11 +47,17 @@ urlpatterns = patterns('',
 	
 	url(r'^datos2/alta/persona$',alta_persona),
 	url(r'^datos2/editar/persona/(\d+)$',editar_persona),
+	url(r'^datos2/alta/telefono$', 'datos2.views.alta_telefono'),
+	url(r'^datos2/alta/domicilio/(\d+)$', 'datos2.views.alta_domicilio'),
+	url(r'^datos2/cargar_imagen$', 'datos2.views.cargar_imagen'),
 	url(r'^datos2/alta/([a-z]+)$', 'datos2.views.alta_'),
+	
+	
 	url(r'^datos2/lista/([a-z]+)$', 'datos2.views.lista_'),
 	url(r'^datos2/editar/([a-z]+)/(\d+)$', 'datos2.views.editar_'),
 	url(r'^datos2/eliminar/([a-z]+)/(\d+)$', 'datos2.views.eliminar_'),
 	url(r'^datos2/busqueda/([a-z]+)$', 'datos2.views.busqueda_'),
+	url(r'^datos2/seleccionar/([a-z]+)/(\d+)$', 'datos2.views.seleccionar'),
 	
 	url(r'^usuarios/alta/$', nuevo_usuario),	
 	url(r'^usuarios/salir/$', logout_view),
@@ -59,6 +66,9 @@ urlpatterns = patterns('',
 	url(r'password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'pass_reset.html'}),
 	url(r'^password-changed/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'succes.html'}),
     
+	   # include the lookup urls
+    (r'^admin/lookups/', include(ajax_select_urls)),
+    (r'^admin/', include(admin.site.urls)),
 	
 )
 

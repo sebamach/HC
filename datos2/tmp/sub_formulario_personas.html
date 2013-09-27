@@ -1,45 +1,4 @@
 {%extends 'sub_formulario_datos2.html'%}
 
-{% block span_form %}"span6"{% endblock %}
+{% block span_form %}"span12"{% endblock %}
 
-{% block span_extraform %}"span6"{% endblock %}
-
-{% block extraform %}
-
-	
-	{{ formulario2.management_form }}
-	
-
-	<!-- sheepIt Form -->
-	
-	<div>		
-		<div id="sheepItForm">
-			
-		<!-- Form template-->	  
-		<div id="sheepItForm_template">	
-			{% include 'domicilioclon.html' %}		 
-		</div>
-		<!-- /Form template-->
-
-		   
-		  <!-- No forms template -->
-		  <div id="sheepItForm_noforms_template">No hay domicilios</div>
-		  <!-- /No forms template-->
-		   
-		  <!-- Controls -->
-		  <div class="controls">
-			  <div id="sheepItForm_controls">
-				<div id="sheepItForm_add"><a href="#"><span>Agregar Domicilio</span></a></div>
-				<div id="sheepItForm_remove_last"><a href="#"><span>Remover</span></a></div>
-				<div id="sheepItForm_remove_all"><a href="#"><span>Remover todos</span></a></div>
-			  </div>
-		  </div>
-		  <!-- /Controls -->
-		  
-		</div>
-		<!-- /sheepIt Form -->
-	</div>
-	
-	<br/>	
-
-{% endblock %}

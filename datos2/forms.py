@@ -42,3 +42,7 @@ class BaseDomicilioFormSet(BaseModelFormSet):
         # customize your fields .. e.g. to change the size of a InputText
         self.fields['tipo_domicilio'].widget.attrs['class'] = 'span1'
 
+class FotoPerfilForm(ModelForm):
+	class Meta:
+		model = FotoPerfil
+		exclude = ('persona')

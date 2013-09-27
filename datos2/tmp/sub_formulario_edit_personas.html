@@ -10,76 +10,14 @@
 {% endblock %}
 
 
-{% block span_form %}"span8"{% endblock %}
-{% block span_extraform %}"span4"{% endblock %}
-
+{% block span_form %}"span10"{% endblock %}
 {% load bootstrap %}
 {% block extraform %}
 	
-	{{ formulario2.management_form }}
 	
-	
-		<table>
-		<thead>
-			<tr>
-				{% for field in formulario2.empty_form %}
-					<th>{{field.label}}</th>
-				{% endfor %}
-			</tr>
-		</thead>
-		
-		<tbody>
-			
-		
-			{% for form in formulario2 %} 
-				<tr>
-				{% for field in form %}
-				
-					<td>{{ field }}</td>
-				
-				{% endfor %}
-				</tr>
-				
-			{% endfor %}
-			
-			
-		
-		</tbody>
-		</table>
-		
-<br>
 
-
-	{{ formulario3.management_form }}
 	
-	
-		<table>
-		<thead>
-			<tr>
-				{% for field in formulario3.empty_form %}
-					<th>{{field.label}}</th>
-				{% endfor %}
-			</tr>
-		</thead>
 		
-		<tbody>
-			
-		
-			{% for form in formulario3 %} 
-				<tr>
-				{% for field in form %}
-				
-					<td>{{ field }}</td>
-				
-				{% endfor %}
-				</tr>
-				
-			{% endfor %}
-			
-			
-		
-		</tbody>
-		</table>
 		
 	
 	
