@@ -22,12 +22,16 @@
 </div>							
 						</h1>
 						<span class="badge badge-important ">{{edad}} Años</span>
+						
+					 {% for x in foto %}
+						{{x}}
+					 {% endfor %}
 							
 					</div>
 				</div>
 				<div class="span2">
 					
-					<img alt="140x140" href="/datos2/cargar_imagen" src="{{ foto.image.url }}" class="img-rounded">
+					<img alt="140x140" href="/datos2/cargar_imagen" {% if foto %}src="{{ MEDIA_URL }}{{foto}}" {% else %} src="{{ STATIC_URL }}img/silueta.gif" {% endif %} class="img-rounded">
 					
 					
 				</div>

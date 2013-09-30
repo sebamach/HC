@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 
 
 """
@@ -32,6 +33,8 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 	#(r'^profesiones/create/$', create_update.create_object, profesion_info),
+	
+	url(r'^carga/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.MEDIA_ROOT,}),
 		
 	
 	url(r'^datos/alta/([a-z]+)$', 'datos.views.alta_'),

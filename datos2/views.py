@@ -130,7 +130,7 @@ def seleccionar(request,modelo, id_persona):
 	if fotoperfil:
 		foto = fotoperfil[0].foto
 	else:
-		foto = 1
+		foto = ""
 	domicilios= Domicilio.objects.filter(persona = dato)
 	telefonos= Telefono.objects.filter(persona = dato)
 	delta = datetime.date.today() - dato.fecha_de_nacimiento
