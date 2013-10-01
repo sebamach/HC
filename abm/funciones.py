@@ -27,6 +27,18 @@ def alta(request, clase_name, form_name, modulo, pagina):
 
 def lista(request, clase_name, pagina):
 	datos_lista = clase_name.objects.all()
+	
+	
+	lista_value_objects=[]
+	for dato_lista in datos_lista:
+		lista_value_object=[]
+		for field in dato_lista._meta.fields:
+			lista_value_object.append(field.value_to_string(dato_lista))
+		lista_value_objects.append(lista_value_object)
+	
+	
+	#field=dir(datos_lista[0]._meta.fields[0])
+	
 	paginator = Paginator(datos_lista, 5) # Show 25 contacts per page
 
 	page = request.GET.get('page')
@@ -39,7 +51,7 @@ def lista(request, clase_name, pagina):
        
 		datos = paginator.page(paginator.num_pages)		
 
-	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural, 'n': clase_name()._meta.verbose_name},
+	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural, 'n': clase_name()._meta.verbose_name, 'fields': clase_name()._meta.fields, 'values_table':lista_value_objects},
 							context_instance=RequestContext(request))
 
 def eliminar(request, clase_name, id_domicilio, modulo):

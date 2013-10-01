@@ -44,30 +44,40 @@ $(function()
 
 {% if datos %}
 	<table class='table table-condensed table-striped '  id='table'>
-	<thead>
-		<tr> 
-		<th>Ordenar</th> 
-		</tr> 
-	</thead>
+		<thead>
+			<tr> 
+			{% for field in fields %}
+			<th>{{field.verbose_name}}</th> 
+			{% endfor %}
+			</tr> 
+		</thead>
 		
-		{% for dato in datos %}
-		<tr>
-			<td>
-			  {{dato}}
-			</td>
-			{% if not n == 'persona' %}
-			<td>
-				<a href='/{%block modulo1%}{%endblock%}/editar/{{n}}/{{dato.pk}}' class="label label-success">Editar<i class='icon-pencil icon-white'></i></a>
-				<a href='/{%block modulo2%}{%endblock%}/eliminar/{{n}}/{{dato.pk}}' class="label label-important">Eliminar<i class='icon-trash icon-white'></i></a>
-			</td>
-			{% else %}
-			<td>
-				<a href='/{%block modulo5%}{%endblock%}/seleccionar/{{n}}/{{dato.pk}}' class="label label-success">Seleccionar<i class='icon-pencil icon-white'></i></a>
+		<tbody>
+			
+			{% for values_record in values_table %}
+			<tr>
 				
-			</td>
-			{% endif %}
-		</tr>
-		{% endfor %}
+				{% for value in values_record %}
+				<td>
+				  {{value}}
+				</td>
+				{% endfor %}				
+				{% if not n == 'persona' %}
+				<td>
+					<a href='/{%block modulo1%}{%endblock%}/editar/{{n}}/{{dato.pk}}' class="label label-success">Editar<i class='icon-pencil icon-white'></i></a>
+					<a href='/{%block modulo2%}{%endblock%}/eliminar/{{n}}/{{dato.pk}}' class="label label-important">Eliminar<i class='icon-trash icon-white'></i></a>
+				</td>
+				{% else %}
+				<td>
+					<a href='/{%block modulo5%}{%endblock%}/seleccionar/{{n}}/{{dato.pk}}' class="label label-success">Seleccionar<i class='icon-pencil icon-white'></i></a>
+					
+				</td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+			
+		</tbody>	
+			
 		
 	</table>
 	
