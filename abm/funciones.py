@@ -33,13 +33,13 @@ def lista(request, clase_name, pagina):
 	for dato_lista in datos_lista:
 		lista_value_object=[]
 		for field in dato_lista._meta.fields:
-			lista_value_object.append(field.value_to_string(dato_lista))
+			lista_value_object.append(getattr(dato_lista,field.name))
 		lista_value_objects.append(lista_value_object)
 	
 	
 	#field=dir(datos_lista[0]._meta.fields[0])
 	
-	paginator = Paginator(datos_lista, 5) # Show 25 contacts per page
+	paginator = Paginator(lista_value_objects, 5) # Show 25 contacts per page
 
 	page = request.GET.get('page')
 	try:
@@ -51,7 +51,7 @@ def lista(request, clase_name, pagina):
        
 		datos = paginator.page(paginator.num_pages)		
 
-	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural, 'n': clase_name()._meta.verbose_name, 'fields': clase_name()._meta.fields, 'values_table':lista_value_objects},
+	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural, 'n': clase_name()._meta.verbose_name, 'fields': clase_name._meta.fields},
 							context_instance=RequestContext(request))
 
 def eliminar(request, clase_name, id_domicilio, modulo):
@@ -76,9 +76,18 @@ def editar(request, id_domicilio, clase_name, form_name, modulo, pagina):
 	return render_to_response(pagina, {'formulario': formulario, 'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name}, context_instance=RequestContext(request))
 
 def busqueda(request, clase_name, pagina):
-	query = request.GET.get('q', '')
-	if query:		
 	
+	
+	if request.POST.get('q', ''):
+		query = request.session['query'] = request.POST.get('q', '')
+	else:
+		if request.session.get('query', ''):
+			query = request.session['query']
+		else:
+			query = request.session['query'] = ''
+	
+	if query:	
+			
 		#creo listado de objetos Q, un Q por cada atributo del modelo
 		
 		search_type = 'startswith'				
@@ -96,7 +105,14 @@ def busqueda(request, clase_name, pagina):
 	else:
 		resultados = []
 		
-	paginator = Paginator(resultados, 5) # Show 25 contacts per page
+	lista_value_objects=[]
+	for dato_lista in resultados:
+		lista_value_object=[]
+		for field in dato_lista._meta.fields:
+			lista_value_object.append(getattr(dato_lista,field.name))
+		lista_value_objects.append(lista_value_object)
+		
+	paginator = Paginator(lista_value_objects, 5) # Show 25 contacts per page
 
 	page = request.GET.get('page')
 	try:
@@ -106,14 +122,13 @@ def busqueda(request, clase_name, pagina):
 		datos = paginator.page(1)
 	except EmptyPage:
        
-		datos = paginator.page(paginator.num_pages)
-	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name},
-							context_instance=RequestContext(request))
+		datos = paginator.page(paginator.num_pages)	
+	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name,'fields': clase_name._meta.fields},context_instance=RequestContext(request))
 		
 def autocompletar(request, clase_name):
 	if request.is_ajax():
 		results = []
-		q = request.GET.get('term', '') #jquery-ui.autocomplete parameter
+		q = request.POST.get('term', '') #jquery-ui.autocomplete parameter
 		name_list = clase_name.objects.filter(Q(descripcion__startswith = q )|Q(descripcionReducida__startswith = q)).values('id','descripcion', 'descripcionReducida')[:10]
 		for descripcion in name_list:
 			descripcion_json = {}

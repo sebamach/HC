@@ -35,7 +35,8 @@ $(function()
 
 <div class="input-append">	
 			
-			<form class="form-search" method= 'GET' action='/{%block modulo4%}{%endblock%}/busqueda/{{n}}'>
+			<form class="form-search" method= 'POST' action='/{%block modulo4%}{%endblock%}/busqueda/{{n}}'>
+					{% csrf_token %}
 					<input type="text" id="q" value="{{ query|escape }}"  name="q"  />	
 					<button type="submit" class="btn">Search</button>
 					<a href='/{%block linkcancelar%}{%endblock%}/lista/{{n}}' class="btn">Resetear<i class='icon-trash icon-white'></i></a>
@@ -54,22 +55,22 @@ $(function()
 		
 		<tbody>
 			
-			{% for values_record in values_table %}
+			{% for dato in datos %}
 			<tr>
 				
-				{% for value in values_record %}
+				{% for value in dato %}
 				<td>
 				  {{value}}
 				</td>
 				{% endfor %}				
 				{% if not n == 'persona' %}
 				<td>
-					<a href='/{%block modulo1%}{%endblock%}/editar/{{n}}/{{dato.pk}}' class="label label-success">Editar<i class='icon-pencil icon-white'></i></a>
-					<a href='/{%block modulo2%}{%endblock%}/eliminar/{{n}}/{{dato.pk}}' class="label label-important">Eliminar<i class='icon-trash icon-white'></i></a>
+					<a href='/{%block modulo1%}{%endblock%}/editar/{{n}}/{{dato.0}}' class="label label-success">Editar<i class='icon-pencil icon-white'></i></a>
+					<a href='/{%block modulo2%}{%endblock%}/eliminar/{{n}}/{{dato.0}}' class="label label-important">Eliminar<i class='icon-trash icon-white'></i></a>
 				</td>
 				{% else %}
 				<td>
-					<a href='/{%block modulo5%}{%endblock%}/seleccionar/{{n}}/{{dato.pk}}' class="label label-success">Seleccionar<i class='icon-pencil icon-white'></i></a>
+					<a href='/{%block modulo5%}{%endblock%}/seleccionar/{{n}}/{{dato.0}}' class="label label-success">Seleccionar<i class='icon-pencil icon-white'></i></a>
 					
 				</td>
 				{% endif %}
