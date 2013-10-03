@@ -126,15 +126,17 @@ def autocompletar_nombre_apellido(request,modelo):
 	
 def seleccionar(request,modelo, id_persona):
 	dato=Persona.objects.get(id=id_persona)
-	fotos=FotoPerfil.objects.filter(persona=dato)
-	if fotos:
-		fotos = fotos[fotos.count()-1]
+	fotoperfil=FotoPerfil.objects.filter(persona=dato)
+	if fotoperfil:
+		foto = fotoperfil[0].foto
+	else:
+		foto = ""
 	domicilios= Domicilio.objects.filter(persona = dato)
 	telefonos= Telefono.objects.filter(persona = dato)
 	delta = datetime.date.today() - dato.fecha_de_nacimiento
 	delta = datetime.date.fromordinal(delta.days).year
 	request.session['persona'] = id_persona
-	return render_to_response('persona.html',{'dato':dato, 'edad':delta -1, 'domicilios':domicilios,'telefonos':telefonos, 'fotos':fotos},context_instance=RequestContext(request))
+	return render_to_response('persona.html',{'dato':dato, 'edad':delta, 'domicilios':domicilios,'telefonos':telefonos, 'foto':foto},context_instance=RequestContext(request))
 
 	
 	

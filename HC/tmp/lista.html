@@ -1,14 +1,14 @@
 {%block extra_head%}
 <style type="text/css">
 .ui-autocomplete-loading {
-  background: url('/images/ui-autocomplete_16x16.gif') no-repeat right center;
+  background: url('/static/img/ui-autocomplete_16x16.gif') no-repeat right center;
 }
 </style>
 <script >
 $(function() 
     { 
        $("#q").autocomplete({
-		source: "/datos/lista/get_name/{{n}}/",
+		source: "/datos/lista/get_name/{{n}}",
 		minLength: 2
 	
 		});

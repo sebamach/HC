@@ -128,12 +128,12 @@ def busqueda(request, clase_name, pagina):
 def autocompletar(request, clase_name):
 	if request.is_ajax():
 		results = []
-		q = request.POST.get('term', '') #jquery-ui.autocomplete parameter
-		name_list = clase_name.objects.filter(Q(descripcion__startswith = q )|Q(descripcionReducida__startswith = q)).values('id','descripcion', 'descripcionReducida')[:10]
-		for descripcion in name_list:
+		q = request.GET.get('term', '') #jquery-ui.autocomplete parameter
+		name_list = clase_name.objects.filter(Q(descripcion__startswith = q )|Q(descripcionReducida__startswith = q ))#.values('id','descripcion', 'descripcionReducida')
+		for descripcion in name_list:			
 			descripcion_json = {}
-			descripcion_json['id'] = descripcion['id']
-			descripcion_json['value'] = descripcion['descripcion']
+			descripcion_json['id'] = descripcion.id
+			descripcion_json['value'] = descripcion.descripcion
 			results.append(descripcion_json)
 		data = json.dumps(results)
 	else:

@@ -27,18 +27,29 @@
 				
 			});
 			
+		$(function() 
+    { 
+       $("#q").autocomplete({
+		source: "/datos/lista/get_name/{{n}}",
+		minLength: 2
+	
+		});
+    } 
+	
+);
+			
 			
 		</script>
 		
 		<style type="text/css">
-			label.valid {
+			span.valid {
 			  width: 24px;
 			  height: 24px;
-			  background: url(assets/img/valid.png) center center no-repeat;
+			  background: url(/static/img/valid.png) center center no-repeat;
 			  display: inline-block;
 			  text-indent: -9999px;
 			}
-			label.error {
+			span.error {
 			  font-weight: bold;
 			  color: red;
 			  padding: 2px 8px;

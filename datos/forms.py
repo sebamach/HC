@@ -41,6 +41,7 @@ class ProvinciaForm(ModelForm):
 			'descripcion': TextInput(attrs={ 'required':'true'}),
 			'codigo': TextInput(attrs={ 'required':'true'}),
 			'observacion': forms.Textarea,
+			'pais': TextInput(attrs={ 'id':'q'}),
 			
 		}
 
