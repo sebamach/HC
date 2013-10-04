@@ -50,7 +50,14 @@ nombresModelos={unicode("titulo"):Titulo,
 def alta_(request, modelo):
 	#if request.user.has_module_perms('datos'):
 	if request.user.has_perm('datos.add_'+modelo):
-		return alta(request,nombresModelos[modelo],nombresFormularios[modelo],"datos",'formulario_datos.html')
+		model = nombresModelos[modelo]
+		model_plural_name = model()._meta.verbose_name_plural
+		model_name = model()._meta.verbose_name
+		template_to_redirect='/'+'datos'+'/lista/'+model_name
+		parametros = {}
+		parametros['name'] = model_name
+		parametros['plural_name'] = model_plural_name
+		return alta(request,nombresFormularios[modelo],'formulario_datos.html',template_to_redirect,parametros)
 	else:
 		return HttpResponseRedirect('/403')
 

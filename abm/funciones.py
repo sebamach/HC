@@ -10,19 +10,18 @@ from django.db.models.fields.related import ForeignKey
 
 
 
-
-def alta(request, clase_name, form_name, modulo, pagina):
+#renderiza el formulario en el template de formulario con los parametros recibidos
+#valida formulario con datos recibidos del request POST, los guarda y redirige a template de redireccion
+def alta(request, formulario, template_to_render, template_to_redirect,parametros):
 	if request.method=='POST':
-		formulario=form_name(request.POST)
-		for field in formulario:
-			field = field.upper
+		form=formulario(request.POST)
 			
-		if formulario.is_valid():
-			formulario.save()
-			return HttpResponseRedirect('/'+modulo+'/lista/'+clase_name()._meta.verbose_name)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(template_to_redirect)
 	else:
-		formulario=form_name()
-	return render_to_response(pagina, {'formulario': formulario, 'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name}, context_instance=RequestContext(request))
+		form=formulario()
+	return render_to_response(template_to_render, {'formulario': form, 'parametros': parametros}, context_instance=RequestContext(request))
 
 
 def lista(request, clase_name, pagina):
