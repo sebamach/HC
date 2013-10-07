@@ -8,7 +8,7 @@
 $(function() 
     { 
        $("#q").autocomplete({
-		source: "/{%block modulo6%}{%endblock%}/lista/get_name/{{n}}",
+		source: "/{%block modulo6%}{%endblock%}/lista/get_name/{{parametros.name}}",
 		minLength: 2
 	
 		});

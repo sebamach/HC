@@ -79,15 +79,15 @@ def editar(request, modelo, formulario, id, template_to_redirect, template_to_re
 
 
 		
-def autocompletar(request, clase_name):
+def autocompletar(request, modelo):
 	if request.is_ajax():
 		results = []
 		query = request.GET.get('term', '') #jquery-ui.autocomplete parameter
-		principal=clase_name._meta.fields[1].name
+		principal=modelo._meta.fields[1].name
 		search_type = 'startswith'
 		filter = principal + '__' + search_type			
 		
-		name_list = clase_name.objects.filter(Q(**{filter:query}))#.values('id','descripcion', 'descripcionReducida')
+		name_list = modelo.objects.filter(Q(**{filter:query}))#.values('id','descripcion', 'descripcionReducida')
 		for descripcion in name_list:			
 			descripcion_json = {}
 			descripcion_json['id'] = descripcion.id			

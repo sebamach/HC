@@ -62,6 +62,11 @@ def alta_persona(request):
 		
 
 def alta_(request, model_name):
+	"""
+	llama a la funcion de alta con los parametros correspondientes al nombre de modelo recibido;
+	estos son el modelo, el template a renderizar, el template de redireccion y los parametros a renderizar
+	que son el nombre en plural y singular del modelo
+	"""
 	if request.user.has_perm('datos.add_'+model_name):
 		try:
 			model = nombresModelos[model_name]
@@ -142,6 +147,11 @@ def busqueda_(request,model_name):
 
 	
 def editar_(request, model_name, id):
+	"""
+	llama a la funcion de editar con los parametros correspondientes al nombre de modelo recibido;
+	estos son el modelo, el template a renderizar y de redireccion, el id del objeto a editar, y los parametros a renderizar
+	que son el nombre en plural y singular del modelo
+	"""
 	if request.user.has_perm('datos.change_'+model_name):
 		try:
 			model = nombresModelos[model_name]
@@ -159,6 +169,10 @@ def editar_(request, model_name, id):
 		return HttpResponseRedirect('/403')
 		
 def eliminar_(request, model_name, id):
+	"""
+	llama a la funcion de eliminar con los parametros correspondientes al nombre de modelo recibido,
+	estos son el modelo y el id del objeto a eliminar
+	"""	
 	if request.user.has_perm('datos.delete_tipotelefono'):
 		try:
 			model = nombresModelos[model_name]
@@ -189,11 +203,13 @@ def editar_persona(request, id_persona):
 		return HttpResponseRedirect('/403')		
 
 		
-def autocompletar_(request,modelo):
-	return autocompletar(request,nombresModelos[modelo])
-	
-def autocompletar_nombre_apellido(request,modelo):
-	return autocompletar(request,nombresModelos[modelo])
+def autocompletar_(request,model_name):
+	try:
+		model = nombresModelos[model_name]
+	except KeyError:
+		return HttpResponseRedirect('/404')
+	return autocompletar(request,model)
+
 	
 def seleccionar(request,modelo, id_persona):
 	dato=Persona.objects.get(id=id_persona)
@@ -205,10 +221,9 @@ def seleccionar(request,modelo, id_persona):
 	delta = datetime.date.today() - dato.fecha_de_nacimiento
 	delta = datetime.date.fromordinal(delta.days).year
 	request.session['persona'] = id_persona
-	return render_to_response('persona.html',{'dato':dato, 'edad':delta -1, 'domicilios':domicilios,'telefonos':telefonos, 'fotos':fotos},context_instance=RequestContext(request))
+	return render_to_response('persona.html',{'dato':dato, 'edad':delta -1, 'domicilios':domicilios,'telefonos':telefonos, 'fotos':fotos},context_instance=RequestContext(request))	
+	
 
-	
-	
 def alta_telefono(request):
 	if request.user.has_perm('datos.add_'+'telefono'):
 		if request.method=='POST':

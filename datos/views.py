@@ -8,14 +8,6 @@ from django.db.models import Q
 from stronghold.decorators import public
 from django.contrib.auth.decorators import permission_required
 
-
-
-def menu(request):
-	return render_to_response('index.html')
-
-
-
-
 nombresFormularios={unicode("titulo"):TituloForm,
 					unicode("especialidad"):EspecialidadForm,
 					unicode("pais"):PaisForm,
@@ -118,6 +110,11 @@ def busqueda_(request,model_name):
 	return lista(request, objetos,'lista_datos.html', parametros)
 
 def editar_(request, model_name, id):
+	"""
+	llama a la funcion de editar con los parametros correspondientes al nombre de modelo recibido;
+	estos son el modelo, el template a renderizar y de redireccion, el id del objeto a editar, y los parametros a renderizar
+	que son el nombre en plural y singular del modelo
+	"""
 	if request.user.has_perm('datos.change_'+model_name):
 		try:
 			model = nombresModelos[model_name]
@@ -136,6 +133,10 @@ def editar_(request, model_name, id):
 
 
 def eliminar_(request, model_name, id):
+	"""
+	llama a la funcion de eliminar con los parametros correspondientes al nombre de modelo recibido,
+	estos son el modelo y el id del objeto a eliminar
+	"""
 	if request.user.has_perm('datos.delete_tipotelefono'):
 		try:
 			model = nombresModelos[model_name]
@@ -146,8 +147,9 @@ def eliminar_(request, model_name, id):
 	else:
 		return HttpResponseRedirect('/403')
 
-def ajax_(request,modelo):
-	return ajax(request,nombresModelos[modelo],'lista_datos.html')
-
-def autocompletar_(request,modelo):
-	return autocompletar(request,nombresModelos[modelo])
+def autocompletar_(request,model_name):
+	try:
+		model = nombresModelos[model_name]
+	except KeyError:
+		return HttpResponseRedirect('/404')
+	return autocompletar(request,model)
