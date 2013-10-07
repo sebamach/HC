@@ -8,11 +8,11 @@ import operator
 from django.db.models.fields.related import ForeignKey
 
 
-
-
-#renderiza el formulario en el template de formulario con los parametros recibidos
-#valida formulario con datos recibidos del request POST, los guarda y redirige a template de redireccion
 def alta(request, formulario, template_to_render, template_to_redirect,parametros):
+	"""
+	renderiza el formulario en el template de formulario con los parametros recibidos
+	valida formulario con datos recibidos del request POST, los guarda y redirige a template de redireccion
+	"""
 	if request.method=='POST':
 		form=formulario(request.POST)
 			
@@ -24,105 +24,60 @@ def alta(request, formulario, template_to_render, template_to_redirect,parametro
 	return render_to_response(template_to_render, {'formulario': form, 'parametros': parametros}, context_instance=RequestContext(request))
 
 
-def lista(request, clase_name, pagina):
-	datos_lista = clase_name.objects.all()
-	
-	
-	lista_value_objects=[]
-	for dato_lista in datos_lista:
-		lista_value_object=[]
-		for field in dato_lista._meta.fields:
-			lista_value_object.append(getattr(dato_lista,field.name))
-		lista_value_objects.append(lista_value_object)
-	
-	
-	#field=dir(datos_lista[0]._meta.fields[0])
-	
-	paginator = Paginator(lista_value_objects, 5) # Show 25 contacts per page
+def lista(request, objetos, template_to_render, parametros):
+	"""
+	retorna un template con los valores por atributo de los objetos del modelo correspondiente, y los parametros recibidos
+	"""	
+	#creo "tabla de valores" del modelo, un arreglo conteniendo un arreglo por objecto, que contiene 
+	#los valores de los atributos del modelo, para ser recorrido facilmente en el template
+	registros=[]
+	for objeto in objetos:
+		valores=[]
+		for field in objeto._meta.fields:
+			valores.append(getattr(objeto,field.name))
+		registros.append(valores)
 
+	#creo paginador dentro del arreglo
+	paginator = Paginator(registros, 5) # Show 25 contacts per page
 	page = request.GET.get('page')
 	try:
 		datos = paginator.page(page)
-	except PageNotAnInteger:
-     
+	except PageNotAnInteger:     
 		datos = paginator.page(1)
-	except EmptyPage:
-       
+	except EmptyPage:       
 		datos = paginator.page(paginator.num_pages)		
 
-	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural, 'n': clase_name()._meta.verbose_name, 'fields': clase_name._meta.fields},
-							context_instance=RequestContext(request))
+	return render_to_response(template_to_render, {'datos': datos, 'parametros': parametros,},
+		context_instance=RequestContext(request))
 
-def eliminar(request, clase_name, id_domicilio, modulo):
+
+def eliminar(request, modelo, id, template_to_redirect):
+	"""
+	elimina objeto del modelo recibido por parametro, correspondiente con el id recibido, redirige hacia template
+	"""
 	try:
-		dato=clase_name.objects.get(id=id_domicilio)
+		dato=modelo.objects.get(id=id)
 		dato.delete()
 	except Exception:
 		pass
-	return HttpResponseRedirect('/'+modulo+'/lista/'+clase_name()._meta.verbose_name)
+	return HttpResponseRedirect(template_to_redirect)
 	
-def editar(request, id_domicilio, clase_name, form_name, modulo, pagina):
-
+def editar(request, modelo, formulario, id, template_to_redirect, template_to_render, parametros):
+	"""
+	edita objeto del modelo recibido por parametro, correspondiente con el id recibido, redirige hacia template
+	"""
 	if request.method=='POST':
-		dato = clase_name.objects.get(id=id_domicilio)
-		formulario=form_name(request.POST, instance = dato)
+		dato = modelo.objects.get(id=id)
+		formulario=formulario(request.POST, instance = dato)
 		if formulario.is_valid():
 			formulario.save()
-			return HttpResponseRedirect('/'+modulo+'/lista/'+clase_name()._meta.verbose_name)
+			return HttpResponseRedirect(template_to_redirect)
 	else:
-		result = clase_name.objects.get(id=id_domicilio)
-		formulario = form_name(instance=result)
-	return render_to_response(pagina, {'formulario': formulario, 'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name}, context_instance=RequestContext(request))
+		result = modelo.objects.get(id=id)
+		formulario = formulario(instance=result)
+	return render_to_response(template_to_render, {'formulario': formulario,'parametros':parametros}, context_instance=RequestContext(request))
 
-def busqueda(request, clase_name, pagina):
-	
-	
-	if request.POST.get('q', ''):
-		query = request.session['query'] = request.POST.get('q', '')
-	else:
-		if request.session.get('query', ''):
-			query = request.session['query']
-		else:
-			query = request.session['query'] = ''
-	
-	if query:	
-			
-		#creo listado de objetos Q, un Q por cada atributo del modelo
-		
-		search_type = 'startswith'				
-		Qs=[]		
-		for field in clase_name._meta.fields:	
-			if (str(field.get_internal_type).find('ForeignKey')==-1):
-				atributo_variable=field.name			
-				filter = atributo_variable + '__' + search_type
-				Qs.append(Q(**{ filter:query}))
-		qset = (
-			reduce(operator.or_, Qs)
-		)
-		
-		resultados = clase_name.objects.filter(qset).distinct()
-	else:
-		resultados = []
-		
-	lista_value_objects=[]
-	for dato_lista in resultados:
-		lista_value_object=[]
-		for field in dato_lista._meta.fields:
-			lista_value_object.append(getattr(dato_lista,field.name))
-		lista_value_objects.append(lista_value_object)
-		
-	paginator = Paginator(lista_value_objects, 5) # Show 25 contacts per page
 
-	page = request.GET.get('page')
-	try:
-		datos = paginator.page(page)
-	except PageNotAnInteger:
-     
-		datos = paginator.page(1)
-	except EmptyPage:
-       
-		datos = paginator.page(paginator.num_pages)	
-	return render_to_response(pagina, {'datos': datos,'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name,'fields': clase_name._meta.fields},context_instance=RequestContext(request))
 		
 def autocompletar(request, clase_name):
 	if request.is_ajax():

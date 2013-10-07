@@ -61,38 +61,111 @@ def alta_persona(request):
 		return HttpResponseRedirect('/403')
 		
 
-def alta_(request, modelo):
-	if request.user.has_perm('datos.add_'+modelo):
-		return alta(request,nombresModelos[modelo],nombresFormularios[modelo],"datos2",'formulario_datos2.html')
-	else:
-		return HttpResponseRedirect('/403')
-
-	
-		
-def alta(request, clase_name, form_name, modulo, pagina):
-	if request.method=='POST':
-		formulario=Telefono(request.POST)
-		if formulario.is_valid():
-			formulario.save()
-			return HttpResponseRedirect('/'+modulo+'/lista/'+clase_name()._meta.verbose_name)
-	else:
-		formulario=form_name()
-	return render_to_response(pagina, {'formulario': formulario, 'nombre': clase_name()._meta.verbose_name_plural,'n': clase_name()._meta.verbose_name}, context_instance=RequestContext(request))
-		
-		
-def lista_(request,modelo):
-	return lista(request,nombresModelos[modelo],'lista_datos2.html')
-
-	
-def editar_(request, modelo, id_profesion):
-	if request.user.has_perm('datos.change_'+modelo):
-		return editar(request, id_profesion, nombresModelos[modelo], nombresFormularios[modelo],"datos2",'formulario_datos2.html') 
+def alta_(request, model_name):
+	if request.user.has_perm('datos.add_'+model_name):
+		try:
+			model = nombresModelos[model_name]
+		except KeyError:
+			return HttpResponseRedirect('/404')
+		model_plural_name = model()._meta.verbose_name_plural
+		model_name = model()._meta.verbose_name
+		template_to_redirect='/'+'datos2'+'/lista/'+model_name
+		parametros = {}
+		parametros['name'] = model_name
+		parametros['plural_name'] = model_plural_name
+		return alta(request,nombresFormularios[model_name],'formulario_datos2.html',template_to_redirect,parametros)
 	else:
 		return HttpResponseRedirect('/403')
 		
-def eliminar_(request, modelo, id_domicilio):
-	if request.user.has_perm('datos.delete_'+modelo):
-		return eliminar(request,  nombresModelos[modelo], id_domicilio,"datos2")
+def lista_(request,model_name):	
+	"""
+	llama a la funcion de lista con los parametros correspondientes al nombre de modelo recibido;
+	estos son el modelo, el template a renderizar y los parametros a renderizar
+	que son el nombre en plural y singular del modelo
+	"""
+	try:
+		model = nombresModelos[model_name]
+	except KeyError:
+		return HttpResponseRedirect('/404')
+	model_plural_name = model()._meta.verbose_name_plural
+	model_name = model()._meta.verbose_name
+	parametros = {}
+	parametros['name'] = model_name
+	parametros['plural_name'] = model_plural_name
+	parametros['fields'] = model()._meta.fields
+	objetos = model.objects.all()
+	return lista(request, objetos,'lista_datos2.html', parametros)
+
+def busqueda_(request,model_name):
+	"""
+	llama a la funcion de busqueda con los parametros correspondientes al nombre de modelo recibido;
+	estos son el modelo, el template a renderizar, el id del input de busqueda, y los parametros a renderizar
+	que son el nombre en plural y singular del modelo
+	"""
+
+	if request.POST.get('q', ''):
+		valor = request.session['valor'] = request.POST.get('q', '')
+	else:
+		if request.session.get('valor', ''):
+			valor = request.session['valor']
+		else:
+			valor = request.session['valor'] = ''
+	
+	try:
+		model = nombresModelos[model_name]
+	except KeyError:
+		return HttpResponseRedirect('/404')
+
+	if valor:			
+		#creo listado de objetos Q, un Q por cada atributo del modelo, Q es una query atributo__starswith__=valor
+		search_type = 'startswith'				
+		Qs=[]		
+		for field in model._meta.fields:	
+			if (str(field.get_internal_type).find('ForeignKey')==-1):
+				atributo_variable=field.name			
+				filter = atributo_variable + '__' + search_type
+				Qs.append(Q(**{ filter:valor}))
+		qset = (
+			reduce(operator.or_, Qs)
+		)		
+		objetos = model.objects.filter(qset).distinct()
+	else:
+		objetos = []
+
+	model_plural_name = model()._meta.verbose_name_plural
+	model_name = model()._meta.verbose_name
+	parametros = {}
+	parametros['name'] = model_name
+	parametros['plural_name'] = model_plural_name
+	parametros['fields'] = model()._meta.fields
+	return lista(request, objetos,'lista_datos2.html', parametros)
+
+	
+def editar_(request, model_name, id):
+	if request.user.has_perm('datos.change_'+model_name):
+		try:
+			model = nombresModelos[model_name]
+		except KeyError:
+			return HttpResponseRedirect('/404')
+		model_plural_name = model()._meta.verbose_name_plural
+		model_name = model()._meta.verbose_name
+		parametros = {}
+		parametros['name'] = model_name
+		parametros['plural_name'] = model_plural_name
+		parametros['fields'] = model()._meta.fields
+		template_to_redirect='/'+'datos2'+'/lista/'+model_name
+		return editar(request, model, nombresFormularios[model_name], id, template_to_redirect, "formulario_datos2.html", parametros) 
+	else:
+		return HttpResponseRedirect('/403')
+		
+def eliminar_(request, model_name, id):
+	if request.user.has_perm('datos.delete_tipotelefono'):
+		try:
+			model = nombresModelos[model_name]
+		except KeyError:
+			return HttpResponseRedirect('/404')
+		template_to_redirect = '/'+'datos2'+'/lista/'+model()._meta.verbose_name
+		return eliminar(request, model, id, template_to_redirect)
 	else:
 		return HttpResponseRedirect('/403')
 		
@@ -113,10 +186,8 @@ def editar_persona(request, id_persona):
 			
 		return render_to_response('formulario_edit_personas.html', {'formulario': formulario1, 'nombre': Persona._meta.verbose_name_plural, 'n': Persona._meta.verbose_name,}, context_instance=RequestContext(request))
 	else:
-		return HttpResponseRedirect('/403')
-		
-def busqueda_(request,modelo):
-	return busqueda(request,nombresModelos[modelo],'lista_datos2.html')
+		return HttpResponseRedirect('/403')		
+
 		
 def autocompletar_(request,modelo):
 	return autocompletar(request,nombresModelos[modelo])
@@ -154,7 +225,7 @@ def alta_telefono(request):
 	else:
 		return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
 	
-def alta_domicilio(request,id_persona):
+def alta_domicilio(request):
 	if request.user.has_perm('datos.add_'+'domicilio'):
 		if request.method=='POST':
 			formulario=PartialDomicilioForm(request.POST)
@@ -162,11 +233,12 @@ def alta_domicilio(request,id_persona):
 				domicilio=formulario.save(commit=False)
 				domicilio.persona= Persona.objects.get(id=id_persona)
 				domicilio.save()
-			return HttpResponseRedirect('/datos2/seleccionar/persona/'+id_persona)
+				return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
 		else:
 			formulario=PartialDomicilioForm()
-				
-		return alta(request,nombresModelos['domicilio'],nombresFormularios['partialdomicilio'],"datos2",'formulario_datos2.html')
+		return render_to_response('formulario_datos2.html', {'formulario': formulario, 'nombre': Telefono._meta.verbose_name_plural,'n': Telefono()._meta.verbose_name}, context_instance=RequestContext(request))
+	else:
+		return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
 		
 def cargar_imagen(request):
 	if request.user.has_perm('datos.add_'+'domicilio'):

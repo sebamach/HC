@@ -44,14 +44,13 @@ urlpatterns = patterns('',
 	url(r'^datos/busqueda/([a-z]+)$', 'datos.views.busqueda_'),
 	url(r'^datos/ajax/([a-z]+)$', 'datos.views.ajax_'),
 	url(r'^/ajax/url/([a-z]+)$', 'datos.views.autocompletar_',),
-# Autocomplete
 	url(r'^datos/lista/get_name/([a-z]+)/$', 'datos.views.autocompletar_', ),	
 	
 	
-	url(r'^datos2/alta/persona$',alta_persona),
-	url(r'^datos2/editar/persona/(\d+)$',editar_persona),
+	#url(r'^datos2/alta/persona$',alta_persona),
+	#url(r'^datos2/editar/persona/(\d+)$',editar_persona),
 	url(r'^datos2/alta/telefono$', 'datos2.views.alta_telefono'),
-	url(r'^datos2/alta/domicilio/(\d+)$', 'datos2.views.alta_domicilio'),
+	url(r'^datos2/alta/domicilio$', 'datos2.views.alta_domicilio'),
 	url(r'^datos2/cargar_imagen$', 'datos2.views.cargar_imagen'),
 	url(r'^datos2/alta/([a-z]+)$', 'datos2.views.alta_'),
 	
