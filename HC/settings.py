@@ -110,6 +110,9 @@ MIDDLEWARE_CLASSES = (
     'audit_log.middleware.UserLoggingMiddleware', 
 	####siempre requiere loguin
 	'stronghold.middleware.LoginRequiredMiddleware',
+	#### transacciones
+	 'django.middleware.transaction.TransactionMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'HC.urls'
@@ -187,4 +190,15 @@ LOGGING = {
 }
 LOGIN_URL = '/login'
 LOGOUT_URL ='/login'
+
+
+#aca esta la configuarion mailer
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tpfinaludc@gmail.com'
+EMAIL_HOST_PASSWORD = 'langostino'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

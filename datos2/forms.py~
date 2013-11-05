@@ -50,4 +50,4 @@ class FotoPerfilForm(ModelForm):
 class DatosProfesionalesForm(ModelForm):
 	class Meta:
 		model = DatosProfesionales
-		exclude = ('persona')
+		exclude = ('especialidad')

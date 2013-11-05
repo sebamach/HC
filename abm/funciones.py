@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db.models import Q
@@ -6,6 +7,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 import operator
 from django.db.models.fields.related import ForeignKey
+from django.contrib.auth.models import User
+from audit_log.models.fields import LastUserField
+from audit_log.models.managers import AuditLog
+from django.contrib import messages 
+
 
 
 def alta(request, formulario, template_to_render, template_to_redirect,parametros):
@@ -17,7 +23,10 @@ def alta(request, formulario, template_to_render, template_to_redirect,parametro
 		form=formulario(request.POST)
 			
 		if form.is_valid():
+			form = form.save(commit=False)
+			form.ultimoUsuario= request.user
 			form.save()
+			messages.add_message(request, messages.ERROR, 'Se dio de ALTA el registro '+ str (form) )
 			return HttpResponseRedirect(template_to_redirect)
 	else:
 		form=formulario()
@@ -58,8 +67,10 @@ def eliminar(request, modelo, id, template_to_redirect):
 	try:
 		dato=modelo.objects.get(id=id)
 		dato.delete()
+		messages.add_message(request, messages.SUCCESS, 'Se ha ELMINADO el registro '+ str (dato) )
+		
 	except Exception:
-		pass
+		messages.add_message(request, messages.ERROR, 'NO se pudo ELIMINAR el registro '+ str (dato) )
 	return HttpResponseRedirect(template_to_redirect)
 	
 def editar(request, modelo, formulario, id, template_to_redirect, template_to_render, parametros):
@@ -68,9 +79,12 @@ def editar(request, modelo, formulario, id, template_to_redirect, template_to_re
 	"""
 	if request.method=='POST':
 		dato = modelo.objects.get(id=id)
-		formulario=formulario(request.POST, instance = dato)
-		if formulario.is_valid():
-			formulario.save()
+		form=formulario(request.POST, instance = dato)
+		if form.is_valid():
+			form = form.save(commit=False)
+			form.UltimoUsuario= request.user
+			form.save()
+			messages.add_message(request, messages.ERROR, 'Se ha MODIFICADO el registro '+ str (dato) )
 			return HttpResponseRedirect(template_to_redirect)
 	else:
 		result = modelo.objects.get(id=id)

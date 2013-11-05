@@ -56,7 +56,11 @@ def alta_persona(request):
 			formulario1=PersonaForm()
 			#formulario2=DomicilioFormSet(queryset=Domicilio.objects.none(),prefix='domicilios',initial=[{'tipo_domicilio': u'legal','direccion': u'hola','localidad': u'rawson'}])
 			#formulario3=TelefonoFormSet(queryset=Telefono.objects.none(),prefix='telefonos',initial=[{'tipo_telefono': u'legal','codigo_area': u'hola','numero': u'rawson'}])
-		return render_to_response('formulario_personas.html', {'formulario': formulario1,  'nombre': Persona._meta.verbose_name_plural, 'n': Persona._meta.verbose_name,}, context_instance=RequestContext(request))
+			
+		parametros = {}
+		parametros['name'] = model_name
+		parametros['plural_name'] = model_plural_name
+		return render_to_response('formulario_personas.html', {'formulario': formulario1,  'parametros': parametros,}, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/403')
 		
@@ -220,7 +224,7 @@ def seleccionar(request,modelo, id_persona):
 	telefonos= Telefono.objects.filter(persona = dato)
 	delta = datetime.date.today() - dato.fecha_de_nacimiento
 	delta = datetime.date.fromordinal(delta.days).year
-	request.session['persona'] = id_persona
+	request.session['persona'] = dato
 	return render_to_response('persona.html',{'dato':dato, 'edad':delta -1, 'domicilios':domicilios,'telefonos':telefonos, 'fotos':fotos},context_instance=RequestContext(request))	
 	
 
@@ -268,4 +272,16 @@ def cargar_imagen(request):
 			formulario=FotoPerfilForm()
 		return render_to_response('formulario_datos2.html', {'formulario': formulario, 'nombre': 'fotos','n': 'foto'}, context_instance=RequestContext(request))
 		
-	
+def cargar_datos_profesionales(request):
+	sucesos=[]
+	if request.method=='POST':
+		formulario=DatosProfesionalesForm(request.POST)
+		if formulario.is_valid():
+			profesional=formulario.save(commit=False)
+			profesional.persona= Persona.objects.get(id=request.session['persona'])
+			profesional.save()
+			sucesos.append("Datos Profesionales asignados correctamente")
+			return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
+	else:
+		formulario=DatosProfesionalesForm()
+	return render_to_response('formulario_datos2.html', {'sucesos': sucesos,'formulario': formulario, 'nombre': 'datosProfesional','n': 'datoProfesional'}, context_instance=RequestContext(request))

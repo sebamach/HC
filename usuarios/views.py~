@@ -1,6 +1,5 @@
 #FFFFFF# Create your views here.
 from models import *
-from datos2.models import *
 from forms import *
 from abm.funciones import *
 from django.contrib.auth.models import *
@@ -15,8 +14,6 @@ from stronghold.decorators import public
 from django.contrib.auth.decorators import permission_required
 import string
 import random
-from django.core.mail import EmailMessage 
-from django.db import transaction
 
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -24,10 +21,7 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def coor_generator(size=2, chars=string.ascii_uppercase + string.digits):
 	return ''.join(random.choice(chars) for x in range(size))
-
-
-
-@transaction.commit_on_success	
+	
 def nuevo_usuario(request):
 	clave=''
 	errores=[]
@@ -41,26 +35,21 @@ def nuevo_usuario(request):
 			if formulario_user.is_valid():
 				matriz = generar_matriz()
 				clave = id_generator()
-				if not Perfil.objects.filter(persona=request.session['persona']):
+				if not Perfil.objects.filter(persona=Persona.objects.get(id=request.session['persona'])):
 					usuario = User.objects.create_user(request.POST['username'], '', clave)
-					usuario.is_active=False
 					perfil = formulario_perfil.save(commit=False)
 					tarjeta = tarjeta.save(commit=False)
 					perfil.usuario = usuario
-					perfil.persona = request.session['persona']
+					perfil.persona = Persona.objects.get(id=request.session['persona'])
 					perfil.save()
 					tarjeta.usuario = usuario
-					tarjeta.ultimoUsuario = request.user
 					tarjeta.cordenadas = matriz
-					tarjeta.save()
-					#destino = DatosProfesionales.objects.get(persona=perfil.persona)
-					enviar_correo('Creacion de Usuario', 'sadfasdfasdf' , 'seba_rw84@hotmail.com')
-					messages.add_message(request, messages.ERROR, 'Se Envio por mail ' )
-					return HttpResponseRedirect('/datos2/seleccionar/persona/'+str(request.session['persona'].id))
+					sucesos.append('anduvo todo piola vago')
+					return HttpResponseRedirect('/datos2/lista/persona')
 				else:
-					messages.add_message(request, messages.ERROR, 'Ya Existe un usuairo para esa persona' )
+					errores.append ('ya Existe un usaurio para esa persona')
 			else:
-				messages.add_message(request, messages.ERROR, 'Nombre de USER NO VALIDO' )
+				errores.append('Nombre de usuario no valido')
 			return render_to_response('formulario_usuarios.html', {'formulario': PartialUsuarioForm,  'nombre': "Usuarios",'n': "usuario", 'modulo': "usuario", 'errores':errores}, context_instance=RequestContext(request))
 		else:
 			formulario_user=PartialUsuarioForm()
@@ -72,7 +61,7 @@ def nuevo_usuario(request):
 	
 
 def lista_(request):
-	return lista(request,User,'lista_usuarios.html',parametros=['hola'])
+	return lista(request,User,'lista_usuarios.html')
 	
 
 def editar_(request, modelo, id_user):
@@ -102,8 +91,7 @@ def login_usuario(request):
 			if acceso.is_active:
 				login(request,acceso)
 				return HttpResponseRedirect('/')
-			else:
-				return HttpResponseRedirect('/password_change/')
+			
 			
 	else:
 		formulario=AuthenticationForm()
@@ -120,8 +108,3 @@ def generar_matriz():
 		for j in range (10):
 			matriz.append(coor_generator())
 	return matriz
-
-def enviar_correo (asunto, mensaje, destino):
-	email = EmailMessage(asunto, mensaje, to=[destino])
-	#Agregamos una variable 'email' y le pasamos los valores del Asunto, Mensaje y el correo destinatario
-	email.send()

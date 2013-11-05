@@ -57,6 +57,7 @@ urlpatterns = patterns('',
 	url(r'^datos2/busqueda/([a-z]+)$', 'datos2.views.busqueda_'),
 	url(r'^datos2/seleccionar/([a-z]+)/(\d+)$', 'datos2.views.seleccionar'),
 	url(r'^datos2/lista/get_name/([a-z]+)/$', 'datos2.views.autocompletar_', ),
+	url(r'^datos2/profesional/$', 'datos2.views.cargar_datos_profesionales', ),
 	
 	url(r'^usuarios/alta/$', nuevo_usuario),	
 	url(r'^usuarios/salir/$', logout_view),

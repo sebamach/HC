@@ -1,6 +1,10 @@
 {%extends 'formulario.html'%}
 {%block extraform%} 
-{{ formulario_perfil.as_table }} 
+{{ clave }} 
+{% for elemento in matriz  %}
+	{{ elementos }}
+{% endfor %}
+{{ matriz }} 	
 <br/>
 {%endblock%}
 

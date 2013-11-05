@@ -43,21 +43,29 @@
 		</div>
 	</div>
 	<div class="row-fluid">
-		
+		<div class="span12">
+			{%block mensajes%} 
+				<div class="alert-error">
+					{% for mensaje in errores %}
+						<strong>{{ mensaje }} </strong> 
+					    <a class="close" data-dismiss="alert" href="#">&times;</a>
+					{% endfor%}
+				</div>
+				<div class="alert-succes">
+					{% for mensaje in sucesos %}
+						<strong>{{ mensaje }} </strong> 
+					    <a class="close" data-dismiss="alert" href="#">&times;</a>
+					{% endfor%}
+				</div>
+			{%endblock%}
+		</div>
 	</div>
 	<div class="row-fluid">
 		<div class="span2">
+
 			
-		</div>
 		<div class="span10">
-			{% if messages %}
-			<div class="alert">
-				{% for message in messages %} 
-						{{ message}}
-					<a class="close" data-dismiss="alert" href="#">&times;</a>
-				{% endfor %} 
-			</div>
-			{% endif %}
+			
 			{% block cuerpo%}
 			{% endblock %}
 		</div>
