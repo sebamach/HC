@@ -5,7 +5,7 @@
 	<head>
 		
 		
-		 <meta charset="utf-8">
+  <meta charset="utf-8">
   <title>Historia Clinica Digital</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -22,6 +22,8 @@
 	<script src="/static/js/funciones.js"></script>		
 	<script src="/static/js/jquery.tablesorter.js"></script>
 	<script type="text/javascript"src="/static/js/jquery-ui-1.10.3.custom.min.js" ></script>
+	<script src="/static/tinymce/js/tinymce/tinymce.min.js"></script>
+	<script>tinymce.init({selector:'textarea'});</script>
   <!-- Fav and touch icons -->
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/img/apple-touch-icon-144-precomposed.png">
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/img/apple-touch-icon-114-precomposed.png">
@@ -47,7 +49,8 @@
 	</div>
 	<div class="row-fluid">
 		<div class="span2">
-			
+			{% block izquierda%}
+			{% endblock %}
 		</div>
 		<div class="span10">
 			{% if messages %}
@@ -66,19 +69,19 @@
 	<div class="row-fluid">
 		<div class="span4">
 			{%block submenuizq%}
-				<h6>MENU PROXIMO</h6>	
+				
 			{%endblock%}
 				
 			
 		</div>
 		<div class="span4">
 			{%block submenu%}
-				<h6>MENU PROXIMO</h6>	
+				
 			{%endblock%}
 		</div>
 		<div class="span4">
 			{%block submenuder%}
-				<h6>MENU PROXIMO</h6>	
+			
 			{%endblock%}
 			
 		</div>

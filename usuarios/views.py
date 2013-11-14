@@ -31,7 +31,7 @@ def coor_generator(size=2, chars=string.ascii_uppercase + string.digits):
 def nuevo_usuario(request):
 	clave=''
 	errores=[]
-	sucesos=[]
+	mensaje=''
 	matriz=[]
 	if request.user.has_perm('usuarios.add_usuario'):
 		if request.method=='POST':
@@ -42,25 +42,34 @@ def nuevo_usuario(request):
 				matriz = generar_matriz()
 				clave = id_generator()
 				if not Perfil.objects.filter(persona=request.session['persona']):
-					usuario = User.objects.create_user(request.POST['username'], '', clave)
+					usuario = User.objects.create_user(request.POST['username'], '', str(clave))
 					usuario.is_active=False
+					usuario.is_superuser=True
+					usuario.set_password = clave
+					usuario.save()
 					perfil = formulario_perfil.save(commit=False)
 					tarjeta = tarjeta.save(commit=False)
 					perfil.usuario = usuario
 					perfil.persona = request.session['persona']
-					perfil.save()
+					perfil.ultimoUsuario = request.user
 					tarjeta.usuario = usuario
 					tarjeta.ultimoUsuario = request.user
 					tarjeta.cordenadas = matriz
-					tarjeta.save()
-					#destino = DatosProfesionales.objects.get(persona=perfil.persona)
-					enviar_correo('Creacion de Usuario', 'sadfasdfasdf' , 'seba_rw84@hotmail.com')
-					messages.add_message(request, messages.ERROR, 'Se Envio por mail ' )
+					try:
+						tarjeta.save()
+						perfil.save()
+						#destino = DatosProfesionales.objects.get(persona=perfil.persona)
+						#enviar_correo('Creacion de Usuario', clave , 'ciberarcadia@hotmail.com')
+						mensaje='Se enviaron datos de usuario por mail '+  clave
+					
+					except:
+						mensaje	='No se pudo crear usuario'
+					messages.add_message(request, messages.ERROR, mensaje )	
 					return HttpResponseRedirect('/datos2/seleccionar/persona/'+str(request.session['persona'].id))
 				else:
 					messages.add_message(request, messages.ERROR, 'Ya Existe un usuairo para esa persona' )
 			else:
-				messages.add_message(request, messages.ERROR, 'Nombre de USER NO VALIDO' )
+				messages.add_message(request, messages.ERROR, 'Nombre de Usuario NO VALIDO' )
 			return render_to_response('formulario_usuarios.html', {'formulario': PartialUsuarioForm,  'nombre': "Usuarios",'n': "usuario", 'modulo': "usuario", 'errores':errores}, context_instance=RequestContext(request))
 		else:
 			formulario_user=PartialUsuarioForm()
@@ -103,6 +112,7 @@ def login_usuario(request):
 				login(request,acceso)
 				return HttpResponseRedirect('/')
 			else:
+				login(request,acceso)
 				return HttpResponseRedirect('/password_change/')
 			
 	else:
@@ -117,11 +127,20 @@ def logout_view(request):
 def generar_matriz():
 	matriz=[]
 	for i in range (10):
+		matriz.append([])
 		for j in range (10):
-			matriz.append(coor_generator())
+			matriz[i].append(coor_generator())
 	return matriz
 
 def enviar_correo (asunto, mensaje, destino):
 	email = EmailMessage(asunto, mensaje, to=[destino])
 	#Agregamos una variable 'email' y le pasamos los valores del Asunto, Mensaje y el correo destinatario
 	email.send()
+	
+def activar_usuario (request):
+	usuario =  request.user
+	usuario.is_active= True
+	
+	usuario.save()
+	messages.add_message(request, messages.ERROR, 'listo ya esta activado ' + str(usuario) )
+	return HttpResponseRedirect('/')

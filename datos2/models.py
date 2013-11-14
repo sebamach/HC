@@ -16,10 +16,10 @@ class Persona (models.Model):
 	provincia_nacimiento = models.ForeignKey(Provincia, on_delete=models.PROTECT, null=True, blank=True)
 	localidad_nacimiento = models.ForeignKey(Localidad, on_delete=models.PROTECT, null=True, blank=True)
 	fecha_de_nacimiento = models.DateField("FECHA DE NACIMIENTO")
-	observacion = models.CharField("OBSERVACION", max_length=20)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 	def __str__(self):
 		return self.apellido+', '+self.nombre +' ('+str(self.numero_documento)+')'
@@ -32,11 +32,11 @@ class Telefono (models.Model):
 	tipo_telefono = models.ForeignKey(TipoTelefono, on_delete=models.PROTECT)
 	codigo_area = models.CharField("CODIGO DE AREA", max_length=20)
 	numero = models.CharField("NUMERO TELEFONICO", max_length=20)
-	observacion = models.CharField("OBSERVACION", max_length=20)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	persona = models.ForeignKey(Persona, on_delete=models.PROTECT)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 	def __str__(self):
 		return self.codigo_area+'-'+self.numero		
@@ -46,11 +46,11 @@ class Domicilio (models.Model):
 	tipo_domicilio = models.ForeignKey(TipoDomicilio, on_delete=models.PROTECT)
 	direccion = models.CharField("DIRECCION", max_length=50)
 	localidad = models.ForeignKey(Localidad, on_delete=models.PROTECT)
-	observacion = models.CharField("OBSERVACION", max_length=20)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	persona = models.ForeignKey(Persona, on_delete=models.PROTECT)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	def __str__(self):
 		return self.direccion
 		
@@ -58,8 +58,8 @@ class FotoPerfil (models.Model):
 	foto = models.ImageField(upload_to = 'fotitos')
 	persona = models.ForeignKey(Persona)		
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 class DatosProfesionales (models.Model):
 	persona = models.ForeignKey(Persona)
@@ -67,7 +67,9 @@ class DatosProfesionales (models.Model):
 	matriculap = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)
 	matriculan = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)
 	email=	models.EmailField("Correo Electronico")
-	
+	ultimoUsuario = models.ForeignKey(User, editable=False)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 
 
 	

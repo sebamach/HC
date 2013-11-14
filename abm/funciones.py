@@ -82,7 +82,7 @@ def editar(request, modelo, formulario, id, template_to_redirect, template_to_re
 		form=formulario(request.POST, instance = dato)
 		if form.is_valid():
 			form = form.save(commit=False)
-			form.UltimoUsuario= request.user
+			form.ultimoUsuario= request.user
 			form.save()
 			messages.add_message(request, messages.ERROR, 'Se ha MODIFICADO el registro '+ str (dato) )
 			return HttpResponseRedirect(template_to_redirect)

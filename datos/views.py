@@ -18,6 +18,7 @@ nombresFormularios={unicode("titulo"):TituloForm,
 					unicode("tipopersona"):TipoPersonaForm,
 					unicode("tipodomicilio"):TipoDomicilioForm,
 					unicode("tipotelefono"):TipoTelefonoForm,
+					unicode("cie"):Cie10Form,
 					unicode("tipoestadocivil"):TipoEstadoCivilForm}
 					
 nombresModelos={unicode("titulo"):Titulo,
@@ -30,6 +31,7 @@ nombresModelos={unicode("titulo"):Titulo,
 				unicode("tipopersona"):TipoPersona,
 				unicode("tipodomicilio"):TipoDomicilio,
 				unicode("tipotelefono"):TipoTelefono,
+				unicode("cie"):Cie10,
 				unicode("tipoestadocivil"):TipoEstadoCivil}
 
 

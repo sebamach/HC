@@ -225,7 +225,7 @@ def seleccionar(request,modelo, id_persona):
 	delta = datetime.date.today() - dato.fecha_de_nacimiento
 	delta = datetime.date.fromordinal(delta.days).year
 	request.session['persona'] = dato
-	return render_to_response('persona.html',{'dato':dato, 'edad':delta -1, 'domicilios':domicilios,'telefonos':telefonos, 'fotos':fotos},context_instance=RequestContext(request))	
+	return render_to_response('persona_datos.html',{'dato':dato, 'edad':delta -1, 'domicilios':domicilios,'telefonos':telefonos, 'fotos':fotos},context_instance=RequestContext(request))	
 	
 
 def alta_telefono(request):
@@ -234,9 +234,10 @@ def alta_telefono(request):
 			formulario=PartialTelefonoForm(request.POST)
 			if formulario.is_valid():
 				telefono=formulario.save(commit=False)
-				telefono.persona= Persona.objects.get(id=request.session['persona'])
+				telefono.persona= request.session['persona']
+				telefono.ultimoUsuario= request.user
 				telefono.save()
-				return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
+				return HttpResponseRedirect('/datos2/seleccionar/persona/'+ str(telefono.persona.id)) 
 				
 		else:
 			formulario=PartialTelefonoForm()
@@ -250,9 +251,10 @@ def alta_domicilio(request):
 			formulario=PartialDomicilioForm(request.POST)
 			if formulario.is_valid():
 				domicilio=formulario.save(commit=False)
-				domicilio.persona= Persona.objects.get(id=id_persona)
+				domicilio.persona= request.session['persona']
+				domicilio.ultimoUsuario= request.user
 				domicilio.save()
-				return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
+				return HttpResponseRedirect('/datos2/seleccionar/persona/'+ str(request.session['persona'].id))
 		else:
 			formulario=PartialDomicilioForm()
 		return render_to_response('formulario_datos2.html', {'formulario': formulario, 'nombre': Telefono._meta.verbose_name_plural,'n': Telefono()._meta.verbose_name}, context_instance=RequestContext(request))
@@ -265,23 +267,25 @@ def cargar_imagen(request):
 			formulario=FotoPerfilForm(request.POST, request.FILES)
 			if formulario.is_valid():
 				fotoperfil=formulario.save(commit=False)
-				fotoperfil.persona= Persona.objects.get(id=request.session['persona'])
+				fotoperfil.persona= request.session['persona']
+				fotoperfil.ultimoUsuario= request.user
 				fotoperfil.save()
-				return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
+				return HttpResponseRedirect('/datos2/seleccionar/persona/'+str(request.session['persona'].id))
 		else:
 			formulario=FotoPerfilForm()
 		return render_to_response('formulario_datos2.html', {'formulario': formulario, 'nombre': 'fotos','n': 'foto'}, context_instance=RequestContext(request))
 		
 def cargar_datos_profesionales(request):
-	sucesos=[]
+
 	if request.method=='POST':
 		formulario=DatosProfesionalesForm(request.POST)
 		if formulario.is_valid():
 			profesional=formulario.save(commit=False)
-			profesional.persona= Persona.objects.get(id=request.session['persona'])
+			profesional.persona= request.session['persona']
+			profesional.ultimoUsuario= request.user
 			profesional.save()
-			sucesos.append("Datos Profesionales asignados correctamente")
-			return HttpResponseRedirect('/datos2/seleccionar/persona/'+request.session['persona'])
+			messages.add_message(request, messages.ERROR, 'Datos Profesionales asignados correctamente para '+ str(request.session['persona']) )
+			return HttpResponseRedirect('/datos2/seleccionar/persona/'+str(request.session['persona'].id))
 	else:
 		formulario=DatosProfesionalesForm()
-	return render_to_response('formulario_datos2.html', {'sucesos': sucesos,'formulario': formulario, 'nombre': 'datosProfesional','n': 'datoProfesional'}, context_instance=RequestContext(request))
+	return render_to_response('formulario_datos2.html', {'formulario': formulario, 'nombre': 'datosProfesional','n': 'datoProfesional'}, context_instance=RequestContext(request))

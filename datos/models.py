@@ -17,11 +17,10 @@ MODELADO DE DATOS PARA LA PARAMETRIA DE LA APLICACION DE HISTORIAS CLINICAS
 class Titulo(models.Model):
 	descripcion = models.CharField("DESCRIPCION",max_length=20, unique=True)
 	descripcionReducida = models.CharField("ALIAS",max_length=5, blank=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
-	
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	def __str__(self):
 		return self.descripcion +" ("+ self.descripcionReducida +")"
 	"""def save(self):
@@ -40,11 +39,11 @@ class Titulo(models.Model):
 class Especialidad(models.Model):
 	descripcion = models.CharField("DESCRIPCION", max_length=20)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, blank=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	titulo = models.ForeignKey(Titulo, on_delete=models.PROTECT)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	def __str__(self):
 		return self.descripcion  +" ("+ self.titulo.descripcionReducida +")"
 	"""def save(self):
@@ -64,10 +63,10 @@ class Pais(models.Model):
 	codigoAlfa2 = descripcion = models.CharField("COD. 2 LETRAS" , max_length=2)
 	codigoAlfa3 = descripcion = models.CharField("COD. 3 LETRAS", max_length=3)
 	descripcion = descripcion = models.CharField("DESCRIPCION", max_length=20)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 	def __str__(self):
 		return self.descripcion
@@ -87,11 +86,11 @@ class Provincia(models.Model):
 	codigo = models.CharField("LETRA DE PROV.", max_length=1,unique=True)
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, blank=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 	def __str__(self):
 		return self.descripcion
@@ -110,11 +109,11 @@ class Localidad(models.Model):
 	codigo = models.CharField("CODIGO POSTAL", max_length=5,unique=True)
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, blank=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 	def __str__(self):
 		return self.descripcion
@@ -133,10 +132,10 @@ class Localidad(models.Model):
 class TipoSexo(models.Model):
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, unique=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 	def __str__(self):
 		return self.descripcion
@@ -155,10 +154,10 @@ class TipoSexo(models.Model):
 class TipoDocumento(models.Model):
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, unique=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	def __str__(self):
 		return self.descripcionReducida
 	"""def save(self):
@@ -176,10 +175,10 @@ class TipoDocumento(models.Model):
 class TipoPersona(models.Model):
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, unique=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 	def __str__(self):
 		return self.descripcion
@@ -198,10 +197,10 @@ class TipoPersona(models.Model):
 class TipoDomicilio(models.Model):
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, unique=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	def __str__(self):
 		return self.descripcion
 	"""def save(self):
@@ -219,10 +218,10 @@ class TipoDomicilio(models.Model):
 class TipoTelefono(models.Model):
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, unique=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	def __str__(self):
 		return self.descripcion
 	"""def save(self):
@@ -238,11 +237,10 @@ class TipoTelefono(models.Model):
 class TipoEstadoCivil(models.Model):
 	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, unique=True)
-	observacion = models.CharField("OBSERVACION",max_length=20, blank=True)
+	observacion = models.TextField("OBSERVACION", blank=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True, editable=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, editable=True, null=True)
-	
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	def __str__(self):
 		return self.descripcion
 	"""def save(self):
@@ -256,5 +254,23 @@ class TipoEstadoCivil(models.Model):
 		verbose_name = "tipoestadocivil"
 
 
-
+#cie10 codigos en cod4 solamente
+class Cie10(models.Model):
+	codigo = models.CharField (max_length=4, unique=True)
+	descripcion= models.CharField (max_length=50, unique=True)
+	ultimoUsuario = models.ForeignKey(User, editable=False)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
+	
+	def __str__(self):
+		return self.descripcion
+	"""def save(self):
+		self.descripcion = self.descripcion.upper()
+		self.descripcionReducida = self.descripcionReducida.upper()
+		self.observacion = self.observacion.upper()
+		super(TipoTelefono, self).save()"""
+	class Meta:
+		ordering = ['codigo']
+		verbose_name_plural = "Codigos CIE 10"
+		verbose_name = "cie"
 

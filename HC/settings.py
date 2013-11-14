@@ -128,6 +128,7 @@ TEMPLATE_DIRS = (
 	os.path.join(RUTA_PROYECTO,'../datos2/tmp'),
 	os.path.join(RUTA_PROYECTO,'tmp'),
 	os.path.join(RUTA_PROYECTO,'../usuarios/tmp'),
+	os.path.join(RUTA_PROYECTO,'../clinica/tmp'),
 	
 )
 
@@ -144,6 +145,7 @@ INSTALLED_APPS = (
     'datos2',
     'abm',
 	'usuarios',
+	'clinica',
 	# Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

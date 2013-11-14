@@ -1,0 +1,70 @@
+{%extends 'persona_base.html'%}
+{%block cuerpo_persona%}
+<div style="width: 100%; height: 355px; overflow-y: scroll;">
+		{%for dato in datos%}
+			<blockquote  style= "background-color: #F6F6F7; margin :10px; padding:1px 0px 4px 0px">
+					<h6>
+						{{dato.fecha}} 
+					</h6>
+					<p>
+					{% autoescape off%}
+				    {{dato.prescripcion}} 
+					{% endautoescape %}
+					</p> 
+					<small>{{dato_profesional.especialidad.titulo.descripcionReducida}}{{dato_profesional.persona.apllido}}{{dato_profesional.persona.nombre}}
+					<cite>
+						MN: {{dato_profesional.matriculan}}
+						MP: {{dato_profesional.matriculap}}
+					</cite>
+					</small>
+			</blockquote>
+		{%endfor%}
+</div>		
+<div class="pagination pagination-small">
+			<ul>
+				{% if datos.has_previous %}
+					<li><a href="?page={{ contacts.previous_page_number }}">Previa</a></li>
+				{% else %}
+					<li class="disabled"><a href="?page={{ contacts.previous_page_number }}">Previa</a></li>
+				{% endif %}
+				
+				<li class="disabled"><a> Pagina {{ datos.number }} de {{ datos.paginator.num_pages }}.</a></li>
+			
+				{% if datos.has_next %}
+					<li><a href="?page={{ datos.next_page_number }}">Siguiente</a></li>
+				{% else %}
+					<li class="disabled"><a >Siguiente</a></li>
+				{% endif %}
+				
+			</ul>
+</div>	
+		
+
+
+
+
+<a id="modal-88573" href="#modal-container-88573" role="button" class="btn" data-toggle="modal">Cargar Nuevo</a>
+	{{persona}}
+<div id="modal-container-88573" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
+	<div class="modal-body">
+	<form class="form" action="/clinica/alta/evolucion_internado" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+		{% csrf_token %}
+    <div class="form-actions">
+		{% for field in form.visible_fields %}
+		<div>
+			{{ field }}{% if field.errors %}<span class="help-inline">{{ field.errors.as_text }}</span>{% endif %}
+		</div>
+		{% endfor %}
+		{% for field in form.hidden_fields %}
+			{{ field }}
+		{% endfor %}
+        <input class="btn btn-small" type="submit" value="Registrar"/>
+    </div>
+	</form>
+	</div>
+</div>
+	
+	
+	
+
+{% endblock %}

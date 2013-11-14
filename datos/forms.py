@@ -114,3 +114,12 @@ class TipoEstadoCivilForm(ModelForm):
 			'observacion': forms.Textarea,
 			
 		}
+
+class Cie10Form(ModelForm):
+	class Meta:
+		model = Cie10	
+		widgets = {
+			'codigo': TextInput(attrs={ 'required':'true'}),
+			'descripcion': TextInput(attrs={ 'required':'true'}),
+			
+		}

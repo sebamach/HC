@@ -12,6 +12,7 @@ from views import *
 from datos.views import *
 from datos2.views import *
 from usuarios.views import *
+from clinica.views import *
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from ajax_select import urls as ajax_select_urls
@@ -63,12 +64,20 @@ urlpatterns = patterns('',
 	url(r'^usuarios/salir/$', logout_view),
 	url(r'^usuarios/lista/usuario/$', 'usuarios.views.lista_'),		
 	url(r'^usuarios/bloqueo/([a-z]+)/(\d+)$', 'usuarios.views.bloqueo_usuario'),
-	url(r'password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'pass_reset.html'}),
-	url(r'^password-changed/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'succes.html'}),
+	url(r'^password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'pass_reset.html'}),
+	url(r'password_changed/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'succes.html',}),
+	url(r'^activar/$', 'usuarios.views.activar_usuario'),
+
+    
+	url(r'^clinica/lista/evolucion_internado$', 'clinica.views.listar_evolucion_doctor'),
+	url(r'^clinica/alta/evolucion_internado$', 'clinica.views.alta_evolucion_internado'),
     
 	   # include the lookup urls
     (r'^admin/lookups/', include(ajax_select_urls)),
     (r'^admin/', include(admin.site.urls)),
+    
+    
+    
 	
 )
 
