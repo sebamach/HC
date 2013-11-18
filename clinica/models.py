@@ -11,14 +11,16 @@ from audit_log.models.managers import AuditLog
 #hoja de evolucion de internado (doctor)
 class Evolucion_doctor(models.Model):
 	persona = models.ForeignKey(Persona, editable=False)
-	fecha = models.DateField ()
+	fecha = models.DateTimeField ()
+	diagnostico=models.ForeignKey(Cie10, blank=True)
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES", blank=True)
-	firma	= models.ForeignKey(User)##no editable se uso para probar con admin
+	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	audit_log = AuditLog()
 	class Meta:
 		ordering = ['-fechaCreacion']
+		unique_together =[("persona","fecha","prescripcion",'firma')]
 
 	
 #hoja de evolucion de internado (enfermeros)		
@@ -26,14 +28,14 @@ class Evolucion_enfermeria(models.Model):
 	persona = models.ForeignKey(Persona, editable=False)
 	fecha = models.DateField ()
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES", blank=True)
-	firma	= models.ForeignKey(User)##no editable se uso para probar con admin
+	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	audit_log = AuditLog()
 	
 	class Meta:
 		ordering = ['-fechaCreacion']
-	
+		unique_together =[("persona","fecha","prescripcion",'firma')]
 		
 	
 	
@@ -41,14 +43,15 @@ class Evolucion_enfermeria(models.Model):
 class Prescripciones_medicas(models.Model):
 	persona = models.ForeignKey(Persona, editable=False)
 	fecha = models.DateField ()
+	diagnostico=models.ForeignKey(Cie10, blank=True)
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES MEDICAS", blank=True)
-	firma	= models.ForeignKey(User)##no editable se uso para probar con admin
+	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	audit_log = AuditLog()
 	class Meta:
 		ordering = ['-fechaCreacion']
-	
+		unique_together =[("persona","fecha","prescripcion",'firma')]
 	
 		
 #foja quirurgica		

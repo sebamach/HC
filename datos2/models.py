@@ -62,7 +62,7 @@ class FotoPerfil (models.Model):
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
 class DatosProfesionales (models.Model):
-	persona = models.ForeignKey(Persona)
+	persona = models.ForeignKey(Persona, unique= True)
 	especialidad = models.ForeignKey(Especialidad)
 	matriculap = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)
 	matriculan = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)

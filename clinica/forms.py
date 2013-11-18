@@ -5,6 +5,9 @@ from models import *
 class Evolucion_doctorForm(ModelForm):
 	class Meta:
 		model = Evolucion_doctor
+		widgets = {
+			'fecha': TextInput(attrs={ 'id':'datepicker'}),
+		}
 
 class Evolucion_enfermeriaForm(ModelForm):
 	class Meta:

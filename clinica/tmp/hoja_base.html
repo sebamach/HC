@@ -1,4 +1,22 @@
 {%extends 'persona_base.html'%}
+
+{%block extra_head%}
+
+
+<script type="text/javascript"src="/static/js/jquery-ui-timepicker-addon.js" ></script>
+<link href="/static/css/jquery-ui-timepicker-addon.css" rel="stylesheet" media="screen">
+
+<script type="text/javascript">
+	$(function() {
+		$('#datepicker').datetimepicker({
+	controlType: 'select',
+	timeFormat: 'hh:mm tt'
+});
+	});
+</script>
+
+{%endblock%}
+
 {%block cuerpo_persona%}
 <div style="width: 100%; height: 355px; overflow-y: scroll;">
 		{%for dato in datos%}
@@ -38,18 +56,24 @@
 				
 			</ul>
 </div>	
-		
+
+	
 
 
 
 
-<a id="modal-88573" href="#modal-container-88573" role="button" class="btn" data-toggle="modal">Cargar Nuevo</a>
-	{{persona}}
-<div id="modal-container-88573" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Cargar Nuevo</a>
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h5 id="myModalLabel">Nuevo Registro</h5>
+	</div>
 	<div class="modal-body">
-	<form class="form" action="/clinica/alta/evolucion_internado" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+		<form class="form" action="{{action}}" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 		{% csrf_token %}
-    <div class="form-actions">
+		<div class="form-actions">
 		{% for field in form.visible_fields %}
 		<div>
 			{{ field }}{% if field.errors %}<span class="help-inline">{{ field.errors.as_text }}</span>{% endif %}
@@ -62,6 +86,9 @@
     </div>
 	</form>
 	</div>
+	<div class="modal-footer" id='aca'>
+		<button type="button" class="btn btn-primary" data-toggle="button">Loading state</button>
+    </div>
 </div>
 	
 	

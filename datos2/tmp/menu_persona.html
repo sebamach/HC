@@ -1,90 +1,11 @@
-<div class="navbar">  
-  <div class="navbar-inner">	
-	 <div class="container">
-		<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-		</a>
- 
-		<a class="brand" href='/clinica/lista/evolucion_internado'>probar hoja</a>
-        <div class="nav-collapse collapse">
-			<ul class="nav">
-			    <ul class="nav nav-pills">
-					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="">Parametros<b class="caret"></b></a>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href='/datos/lista/titulo'>Titulos</a></li>
-							<li><a href='/datos/lista/especialidad'>Especialidades</a></li>
-							<li><a href='/datos/lista/pais'>Paises</a></li>
-							<li><a href='/datos/lista/provincia'>Provincias</a></li>
-							<li><a href='/datos/lista/localidad'>Localidades</a></li>
-							<li><a href='/datos/lista/tipodomicilio'>Tipos de Domicilio</a></li>
-							<li><a href='/datos/lista/tipotelefono'>Tipos de Telefono</a></li>
-							<li><a href='/datos/lista/tiposexo'>Tipos de Sexo</a></li>
-							<li><a href='/datos/lista/tipodocumento'>Tipos de Documento</a></li>
-							<li><a href='/datos/lista/tipopersona'>Tipos de Persona</a></li>
-							<li><a href='/datos/lista/tipoestadocivil'>Tipos de Estado civil</a></li>
-							<li><a href='/datos/lista/cie'>Codigos de Diagnostico</a></li>
-						</ul>
-					</li>
-				</ul>
-										
-				<ul class="nav nav-pills">
-					<li class="dropdown">
-						<a class="dropdown-toggle"data-toggle="dropdown"href="">
-							Reportes
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-											
-						</ul>
-						
-				</ul>
-				<ul class="nav nav-pills">
-					<li class="dropdown">
-						<a class="dropdown-toggle"data-toggle="dropdown"href="">
-							Personas
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href='/datos2/lista/persona'>Buscar Persona</a></li>				
-						</ul>
-						
-				</ul>
-				<ul class="nav nav-pills">
-					<li class="dropdown">
-						<a class="dropdown-toggle"data-toggle="dropdown"href="">
-							Usuarios
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href='/usuarios/lista/usuario'>Usuarios</a></li>
-						</ul>
-					</li>
-				</ul>
-				
-				<ul class="nav nav-pills">
-					<li class="dropdown">
-						<a class="dropdown-toggle"data-toggle="dropdown"href="">
-							{{user.username.upper}}
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-												
-							<li><a href='password_change'>Cambiar Password</a></li>
-							
-							<li><a href='/usuarios/salir/'>Salir</a></li>							
-						</ul>
-					</li>
-				</ul>
-			
-				
-						
-				
-			</ul>
-			</div>
-		</div>
-	</div>
-</div>
+
+<ul class="nav nav-tabs">
+  <li class =' {{evolucion }} '><a href='/clinica/lista/evolucion'>Evolucion</a></li>
+  <li class =' {{enfermeria }} '><a href='/clinica/lista/enfermeria'>Enfermeria</a></li>
+  <li><a href="#messages" data-toggle="tab">Messages</a></li>
+  <li><a href="#settings" data-toggle="tab">Settings</a></li>
+</ul>
+<h2>{{hoja}}</h2>
+		
+		
 

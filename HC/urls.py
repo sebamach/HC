@@ -69,8 +69,10 @@ urlpatterns = patterns('',
 	url(r'^activar/$', 'usuarios.views.activar_usuario'),
 
     
-	url(r'^clinica/lista/evolucion_internado$', 'clinica.views.listar_evolucion_doctor'),
-	url(r'^clinica/alta/evolucion_internado$', 'clinica.views.alta_evolucion_internado'),
+	url(r'^clinica/lista/evolucion$', 'clinica.views.listar_evolucion'),
+	url(r'^clinica/alta/evolucion$', 'clinica.views.alta_evolucion'),
+	url(r'^clinica/lista/enfermeria$', 'clinica.views.listar_enfermeria'),
+	url(r'^clinica/alta/enfermeria$', 'clinica.views.alta_enfermeria'),
     
 	   # include the lookup urls
     (r'^admin/lookups/', include(ajax_select_urls)),
