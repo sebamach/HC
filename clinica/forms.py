@@ -3,13 +3,15 @@ from django import forms
 from models import *
 
 class Evolucion_doctorForm(ModelForm):
+	fecha = forms.DateTimeField(input_formats=["%d-%m-%Y %H:%M"],widget=TextInput(attrs={ 'id':'datepicker'}))
+	
 	class Meta:
 		model = Evolucion_doctor		
 		widgets = {
 			'fecha': TextInput(attrs={ 'id':'datepicker'}),
-		}
-		
-		#fecha = forms.DateTimeField(input_formats=["%d-%m-%Y %H:%M"],widget=DateTimeInput(format="%d-%m-%Y %H:%M")) 
+		}		
+		#fecha = forms.DateTimeField(input_formats=["%d-%m-%Y %H:%M"],widget=DateTimeInput(format="%d-%m-%Y %H:%M"))
+
 
 class Evolucion_enfermeriaForm(ModelForm):
 	class Meta:
