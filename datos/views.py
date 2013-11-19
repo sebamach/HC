@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db.models import Q
 from stronghold.decorators import public
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import *
 
 nombresFormularios={unicode("titulo"):TituloForm,
 					unicode("especialidad"):EspecialidadForm,
@@ -35,6 +35,8 @@ nombresModelos={unicode("titulo"):Titulo,
 				unicode("tipoestadocivil"):TipoEstadoCivil}
 
 
+
+@user_passes_test(lambda u: u.groups.filter(name='PARAMETROS').count() == 1, login_url='/403')
 def alta_(request, model_name):
 	"""
 	llama a la funcion de alta con los parametros correspondientes al nombre de modelo recibido;
@@ -110,7 +112,8 @@ def busqueda_(request,model_name):
 	parametros['plural_name'] = model_plural_name
 	parametros['fields'] = model()._meta.fields
 	return lista(request, objetos,'lista_datos.html', parametros)
-
+	
+@user_passes_test(lambda u: u.groups.filter(name='PARAMETROS').count() == 1, login_url='/403')
 def editar_(request, model_name, id):
 	"""
 	llama a la funcion de editar con los parametros correspondientes al nombre de modelo recibido;
@@ -133,7 +136,7 @@ def editar_(request, model_name, id):
 	else:
 		return HttpResponseRedirect('/403')
 
-
+@user_passes_test(lambda u: u.groups.filter(name='PARAMETROS').count() == 1, login_url='/403')
 def eliminar_(request, model_name, id):
 	"""
 	llama a la funcion de eliminar con los parametros correspondientes al nombre de modelo recibido,

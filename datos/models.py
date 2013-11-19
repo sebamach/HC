@@ -257,7 +257,7 @@ class TipoEstadoCivil(models.Model):
 #cie10 codigos en cod4 solamente
 class Cie10(models.Model):
 	codigo = models.CharField (max_length=4, unique=True)
-	descripcion= models.CharField (max_length=50, unique=True)
+	descripcion= models.CharField (max_length=100, unique=True)
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)

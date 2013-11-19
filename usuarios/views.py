@@ -12,7 +12,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from stronghold.decorators import public
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import *
 import string
 import random
 from django.core.mail import EmailMessage 
@@ -27,7 +27,8 @@ def coor_generator(size=2, chars=string.ascii_uppercase + string.digits):
 
 
 
-@transaction.commit_on_success	
+@transaction.commit_on_success
+@user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')	
 def nuevo_usuario(request):
 	clave=''
 	errores=[]
@@ -59,7 +60,7 @@ def nuevo_usuario(request):
 						tarjeta.save()
 						perfil.save()
 						#destino = DatosProfesionales.objects.get(persona=perfil.persona)
-						#enviar_correo('Creacion de Usuario', clave , 'ciberarcadia@hotmail.com')
+						enviar_correo('Creacion de Usuario', clave , 'ciberarcadia@hotmail.com')
 						mensaje='Se enviaron datos de usuario por mail '+  clave
 					
 					except:
@@ -79,18 +80,18 @@ def nuevo_usuario(request):
 		return HttpResponseRedirect('/403')
 		
 	
-
+@user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')
 def lista_(request):
 	return lista(request,User,'lista_usuarios.html',parametros=['hola'])
 	
-
+@user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')
 def editar_(request, modelo, id_user):
 	if request.user.has_perm('usuarios.change_usuario'):
 		return editar(request, id_user, User, Perfil,"usuarios",'formulario_datos.html') 
 	else:
 		return HttpResponseRedirect('/403')
 		
-@permission_required('usuarios.can_change','/403')
+@user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')
 def bloqueo_usuario(request,modelo,id_user):
 	dato= User.objects.get(id=id_user)
 	if dato.is_active == 1:

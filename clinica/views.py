@@ -4,9 +4,13 @@ from clinica.models import *
 from datos2.models import *
 from datos.models import *
 from usuarios.models import *
+from django.contrib.auth.decorators import *
 from abm.funciones import *
 from forms import *
+import time
+from datetime import datetime
 
+@user_passes_test(lambda u: u.groups.filter(name__startswith='HOJA').count() <> 0, login_url='/403')
 def listar_evolucion(request):
 	"""
 	retorna un template con los posteos realizados por DOCTORES en la hoja de Evolucion
@@ -37,7 +41,7 @@ def listar_evolucion(request):
 		context_instance=RequestContext(request))
 
 
-
+@user_passes_test(lambda u: u.groups.filter(name='HOJA MEDICA').count() == 1 , login_url='/403')
 def alta_evolucion(request):
 	#instancio los parametros para la funcion de alta
 	if request.method=='POST':
@@ -46,7 +50,7 @@ def alta_evolucion(request):
 		if form.is_valid():
 			form = form.save(commit = False)
 			form.persona = request.session['persona']
-			form.firma= request.user
+			form.firma= request.user				
 			try:
 				form.save()
 				messages.add_message(request, messages.ERROR, 'Se dio de ALTA el registro ' )
@@ -63,6 +67,7 @@ def alta_evolucion(request):
 """
 evolucion de internado enfermero
 """	
+@user_passes_test(lambda u: u.groups.filter(name__startswith='HOJA').count() <> 0, login_url='/403')
 def listar_enfermeria(request):
 	"""
 	retorna un template con los posteos realizados por ENFERMEROS en la hoja de Evolucion
@@ -92,7 +97,7 @@ def listar_enfermeria(request):
 		context_instance=RequestContext(request))
 
 
-
+@user_passes_test(lambda u: u.groups.filter(name='HOJA ENFERMERIA').count() == 1 , login_url='/403')
 def alta_enfermeria(request):
 	#instancio los parametros para la funcion de alta
 	if request.method=='POST':

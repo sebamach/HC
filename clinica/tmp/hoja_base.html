@@ -5,12 +5,23 @@
 
 <script type="text/javascript"src="/static/js/jquery-ui-timepicker-addon.js" ></script>
 <link href="/static/css/jquery-ui-timepicker-addon.css" rel="stylesheet" media="screen">
+<link href="/static/css/custom-timepicker-addon.css" rel="stylesheet" media="screen">
+
+<!--
+$('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
+-->
+
+<style type = "text/css">
+.ui-timepicker-select {width: 100px}
+.ui-datepicker { font-size:9pt}
+</style>
 
 <script type="text/javascript">
-	$(function() {
-		$('#datepicker').datetimepicker({
+	$(function() {				
+	$('#datepicker').datetimepicker({	
 	controlType: 'select',
-	timeFormat: 'hh:mm tt'
+	dateFormat: 'yy-mm-dd',
+	timeFormat: 'HH:mm'
 });
 	});
 </script>
@@ -22,7 +33,7 @@
 		{%for dato in datos%}
 			<blockquote  style= "background-color: #F6F6F7; margin :10px; padding:1px 0px 4px 0px">
 					<h6>
-						{{dato.fecha}} 
+						{{dato.fecha|date:'SHORT_DATETIME_FORMAT'}} 
 					</h6>
 					<p>
 					{% autoescape off%}

@@ -1,13 +1,15 @@
-from django.forms import ModelForm, Select, TextInput
+from django.forms import ModelForm, Select, TextInput, DateTimeInput
 from django import forms
 from models import *
 
 class Evolucion_doctorForm(ModelForm):
 	class Meta:
-		model = Evolucion_doctor
+		model = Evolucion_doctor		
 		widgets = {
 			'fecha': TextInput(attrs={ 'id':'datepicker'}),
 		}
+		
+		#fecha = forms.DateTimeField(input_formats=["%d-%m-%Y %H:%M"],widget=DateTimeInput(format="%d-%m-%Y %H:%M")) 
 
 class Evolucion_enfermeriaForm(ModelForm):
 	class Meta:

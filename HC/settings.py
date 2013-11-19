@@ -1,6 +1,13 @@
 # Django settings for HC project.
 # Identificando la ruta del proyecto
 import os
+import django.conf.global_settings as DEFAULT_SETTINGS
+
+TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
+ 
+	'django.core.context_processors.request',
+
+)
 RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = True
@@ -33,7 +40,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -47,7 +54,7 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
@@ -92,6 +99,7 @@ STATICFILES_FINDERS = (
 SECRET_KEY = 'a(n=##8en)ld@3&*=59krb!u_=b7!19lhj@l@q1)^j7n7=j4d!'
 
 # List of callables that know how to import templates from various sources.
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
@@ -131,6 +139,7 @@ TEMPLATE_DIRS = (
 	os.path.join(RUTA_PROYECTO,'../clinica/tmp'),
 	
 )
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',

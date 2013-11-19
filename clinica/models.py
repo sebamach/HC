@@ -4,6 +4,7 @@ from datos.models import *
 from django.contrib.auth.models import User
 from audit_log.models.fields import LastUserField
 from audit_log.models.managers import AuditLog
+from django.utils.formats import get_format
 
 # Create your models here.
 
@@ -26,7 +27,7 @@ class Evolucion_doctor(models.Model):
 #hoja de evolucion de internado (enfermeros)		
 class Evolucion_enfermeria(models.Model):
 	persona = models.ForeignKey(Persona, editable=False)
-	fecha = models.DateField ()
+	fecha = models.DateTimeField ()
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES", blank=True)
 	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
@@ -42,7 +43,7 @@ class Evolucion_enfermeria(models.Model):
 #hoja de prescripciones y ordenes medicas (enfermeros)
 class Prescripciones_medicas(models.Model):
 	persona = models.ForeignKey(Persona, editable=False)
-	fecha = models.DateField ()
+	fecha = models.DateTimeField ()
 	diagnostico=models.ForeignKey(Cie10, blank=True)
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES MEDICAS", blank=True)
 	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin

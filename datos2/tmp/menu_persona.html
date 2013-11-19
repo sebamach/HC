@@ -1,9 +1,12 @@
 
 <ul class="nav nav-tabs">
-  <li class =' {{evolucion }} '><a href='/clinica/lista/evolucion'>Evolucion</a></li>
-  <li class =' {{enfermeria }} '><a href='/clinica/lista/enfermeria'>Enfermeria</a></li>
-  <li><a href="#messages" data-toggle="tab">Messages</a></li>
-  <li><a href="#settings" data-toggle="tab">Settings</a></li>
+ <li class =' {{datos}} '><a href='/datos2/seleccionar/persona/{{request.session.persona.id}}'>Datos Personales</a></li>
+ <li class =' {{evolucion }} '><a href='/clinica/lista/evolucion'>Evolucion</a></li>
+ <li class =' {{enfermeria }} '><a href='/clinica/lista/enfermeria'>Enfermeria</a></li>
+ <li class =' {{prescripciones}} '><a href=''>Prescripciones Medicas</a></li>
+ <li class =' {{guardia }} '><a href=''>Guardia</a></li>
+  
+
 </ul>
 <h2>{{hoja}}</h2>
 		

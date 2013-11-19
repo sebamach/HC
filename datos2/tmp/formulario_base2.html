@@ -62,9 +62,8 @@
 			}
 		</style>
 		{%endblock%}
-		
-	
 
+{%include 'persona_base.html'%} 
 {% if formulario.is_multipart %}
 <form enctype="multipart/form-data" class="form-horizontal" id='formulario' method='post' action=''>
 {% else %}
