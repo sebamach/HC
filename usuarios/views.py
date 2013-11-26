@@ -1,4 +1,5 @@
-#FFFFFF# Create your views here.
+# -*- coding: utf-8 -*-
+
 from models import *
 from datos2.models import *
 from forms import *
@@ -17,6 +18,11 @@ import string
 import random
 from django.core.mail import EmailMessage 
 from django.db import transaction
+from cPickle import loads, dumps
+#import ho.pisa as pisa
+import cStringIO as StringIO
+import cgi
+from django.template.loader import render_to_string
 
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -25,7 +31,8 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 def coor_generator(size=2, chars=string.ascii_uppercase + string.digits):
 	return ''.join(random.choice(chars) for x in range(size))
 
-
+def coor_generator2(size=1, chars=string.digits):
+	return ''.join(random.choice(chars) for x in range(size))
 
 @transaction.commit_on_success
 @user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')	
@@ -43,7 +50,7 @@ def nuevo_usuario(request):
 				matriz = generar_matriz()
 				clave = id_generator()
 				if not Perfil.objects.filter(persona=request.session['persona']):
-					usuario = User.objects.create_user(request.POST['username'], '', str(clave))
+					usuario = User.objects.create_user(generar_username(request), '', str(clave))
 					usuario.is_active=False
 					usuario.is_superuser=True
 					usuario.set_password = clave
@@ -55,16 +62,16 @@ def nuevo_usuario(request):
 					perfil.ultimoUsuario = request.user
 					tarjeta.usuario = usuario
 					tarjeta.ultimoUsuario = request.user
-					tarjeta.cordenadas = matriz
+					tarjeta.cordenadas = dumps(matriz)
 					try:
 						tarjeta.save()
 						perfil.save()
 						#destino = DatosProfesionales.objects.get(persona=perfil.persona)
-						enviar_correo('Creacion de Usuario', clave , 'ciberarcadia@hotmail.com')
+						#enviar_correo('Creacion de Usuario', clave , 'ciberarcadia@hotmail.com', request)
 						mensaje='Se enviaron datos de usuario por mail '+  clave
 					
-					except:
-						mensaje	='No se pudo crear usuario'
+					except Exception, e:
+						mensaje	='No se pudo crear usuario' + str(e)
 					messages.add_message(request, messages.ERROR, mensaje )	
 					return HttpResponseRedirect('/datos2/seleccionar/persona/'+str(request.session['persona'].id))
 				else:
@@ -78,6 +85,23 @@ def nuevo_usuario(request):
 		return render_to_response('formulario_usuarios.html', {'errores':errores,'formulario': PartialUsuarioForm,  'nombre': "Usuarios",'n': "usuario", 'modulo': "usuario",}, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/403')
+		
+def generar_username(request):
+	inicial = request.session['persona'].nombre[:1]	
+	apellido = request.session['persona'].apellido
+	pre_username = inicial + apellido
+	lista = User.objects.filter(username__startswith=pre_username).order_by('-username')
+	if lista.count()<>0:		
+		last_username = lista[0].username.encode('utf-8')
+		digito=re.findall('\d+', last_username)
+		try:
+			numero=int(digito[0])+1
+		except:
+			numero=1
+		username = pre_username + str(numero)
+	else:
+		username = pre_username	
+	return username
 		
 	
 @user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')
@@ -111,6 +135,9 @@ def login_usuario(request):
 		if acceso is not None:
 			if acceso.is_active:
 				login(request,acceso)
+				tarjeta = Tarjeta.objects.get(usuario=request.user)
+				matriz = loads(tarjeta.cordenadas.encode('utf-8'))
+				request.session['matriz']=matriz
 				return HttpResponseRedirect('/')
 			else:
 				login(request,acceso)
@@ -125,6 +152,13 @@ def logout_view(request):
 	logout(request)
 	return HttpResponseRedirect('/')
 
+def generar_coordenadas():
+	coordenadas={}
+	coordenadas['fila']= coor_generator2()
+	coordenadas['columna']= coor_generator2()
+	return coordenadas
+	
+
 def generar_matriz():
 	matriz=[]
 	for i in range (10):
@@ -132,10 +166,43 @@ def generar_matriz():
 		for j in range (10):
 			matriz[i].append(coor_generator())
 	return matriz
+	
+def generar_matriz_ascii(matriz):
+	string=""
+	for k in range (10):
+		string = string + "  " + str(k)
+	string = string + '\n'
+	for i in range (10):		
+		if i<>0 or i<>9:
+			string = string + '\n'
+		string = string + str(i) + " "
+		for j in range (10):
+			string = string + matriz[i][j] + " "
+	return string
+	
+def generar_matriz_html(request):
+	return render_to_response('tabla_matriz.html', context_instance=RequestContext(request))
+	
+def generar_pdf(html):
+    # Función para generar el archivo PDF y devolverlo mediante HttpResponse
+    result = StringIO.StringIO()
+    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), mimetype='application/pdf')
+    return HttpResponse('Error al generar el PDF: %s' % cgi.escape(html))
 
-def enviar_correo (asunto, mensaje, destino):
+def generar_matriz_pdf(request):
+    html = render_to_string('tabla_matriz.html', {'pagesize':'A4'}, context_instance=RequestContext(request))
+    return generar_pdf(html)
+	
+
+def enviar_correo (asunto, mensaje, destino, request):
+	html = render_to_string('tabla_matriz.html', {'pagesize':'A4'}, context_instance=RequestContext(request))
+	out = StringIO.StringIO()
+	pdf = pisa.CreatePDF(StringIO.StringIO(html), out)
 	email = EmailMessage(asunto, mensaje, to=[destino])
 	#Agregamos una variable 'email' y le pasamos los valores del Asunto, Mensaje y el correo destinatario
+	email.attach('agreement.pdf', out.getvalue(), 'application/pdf')
 	email.send()
 	
 def activar_usuario (request):

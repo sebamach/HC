@@ -67,7 +67,8 @@ urlpatterns = patterns('',
 	url(r'^password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'pass_reset.html'}),
 	url(r'password_changed/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'succes.html',}),
 	url(r'^activar/$', 'usuarios.views.activar_usuario'),
-
+	url(r'^usuarios/matriz_coordenadas/$', generar_matriz_html),
+	url(r'^usuarios/matriz_coordenadas_pdf/$', generar_matriz_pdf),
     
 	url(r'^clinica/lista/evolucion$', 'clinica.views.listar_evolucion'),
 	url(r'^clinica/alta/evolucion$', 'clinica.views.alta_evolucion'),

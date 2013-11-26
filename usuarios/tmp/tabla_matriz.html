@@ -1,0 +1,30 @@
+{%extends 'base.html'%}
+{% block cuerpo%}
+
+<h3>MATRIZ DE COORDENADAS</h3>
+
+<table class="table table-condensed table-bordered table-striped">
+<thead>	
+	<tr>
+		<th></th>		
+		{% for i in "xxxxxxxxxx" %}
+		<th>{{forloop.counter}}</th>
+		{% endfor %}
+	</tr>	
+</thead>
+<tbody>    
+    {% for fila in request.session.matriz %}
+    <tr>
+		<th>{{forloop.counter}}</th>
+		{% for valor in fila %}
+		<td>{{ valor }}</td>
+		{% endfor %}
+	 </tr>
+    {% endfor %}
+   
+</tbody>
+</table>
+
+<a href='/usuarios/matriz_coordenadas_pdf/'>generar pdf</a>
+
+{% endblock %}

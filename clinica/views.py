@@ -9,6 +9,8 @@ from abm.funciones import *
 from forms import *
 import time
 from datetime import datetime
+from usuarios.forms import CoordenadasForm
+from usuarios.views import *
 
 @user_passes_test(lambda u: u.groups.filter(name__startswith='HOJA').count() <> 0, login_url='/403')
 def listar_evolucion(request):
@@ -20,7 +22,8 @@ def listar_evolucion(request):
 	objetos = Evolucion_doctor.objects.filter(persona= request.session['persona'])	
 	perfil = Perfil.objects.get(usuario = request.user)
 	dato_profesional = DatosProfesionales.objects.get(persona= perfil.persona)
-	
+	request.session['coordenadas']=generar_coordenadas()
+	formc=CoordenadasForm()
 	#creo paginador dentro del arreglo
 	paginator = Paginator(objetos, 3) # Show 25 contacts per page
 	page = request.GET.get('page')
@@ -37,7 +40,8 @@ def listar_evolucion(request):
 	'dato_profesional':dato_profesional,
 	'form':  Evolucion_doctorForm, 'action':'/clinica/alta/evolucion',
 	'hoja':'EVOLUCION',
-	'evolucion': 'active'},
+	'evolucion': 'active',
+	'formc': formc},
 		context_instance=RequestContext(request))
 
 
@@ -59,6 +63,7 @@ def alta_evolucion(request):
 			
 			return listar_evolucion(request)
 	else:
+		
 		form=Evolucion_doctorForm()
 		listar_evolucion(request)
 	return listar_evolucion(request)

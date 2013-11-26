@@ -18,7 +18,10 @@ class PartialUsuarioForm(ModelForm):
 	
 	class Meta:
 		model = User
-		exclude = ('password', 'first_name','last_name','email','is_staff', 'is_active','date_joined','last_login','is_superuser','user_permissions',)	
+		exclude = ('username','password', 'first_name','last_name','email','is_staff', 'is_active','date_joined','last_login','is_superuser','user_permissions',)	
+	
+class CoordenadasForm(forms.Form):
+	valor = forms.CharField(max_length=2)
 	
 
 # Create your models here.

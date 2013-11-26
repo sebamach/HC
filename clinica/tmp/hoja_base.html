@@ -82,6 +82,15 @@ $('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
 		<h5 id="myModalLabel">Nuevo Registro</h5>
 	</div>
 	<div class="modal-body">
+		<form class="form" action="{{action}}" method="POST" {% if formc.is_multipart %}enctype="multipart/form-data"{% endif %}>
+			{{request.session.coordenadas.fila}},{{request.session.coordenadas.columna}}
+			{% for field in formc.visible_fields %}
+			<div>
+			{{ field }}{% if field.errors %}<span class="help-inline">{{ field.errors.as_text }}</span>{% endif %}
+			</div>
+		{% endfor %}
+			
+		</form>
 		<form class="form" action="{{action}}" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 		{% csrf_token %}
 		<div class="form-actions">
@@ -98,7 +107,7 @@ $('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
 	</form>
 	</div>
 	<div class="modal-footer" id='aca'>
-		<button type="button" class="btn btn-primary" data-toggle="button">Loading state</button>
+		
     </div>
 </div>
 	
