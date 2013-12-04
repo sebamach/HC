@@ -1,0 +1,21 @@
+
+	{%load bootstrap%}
+
+								
+							<fieldset>
+							<form class="form" action={{accion_filtro}} method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+								{% csrf_token %}
+								{%for field in filtro%}
+									Filtrar por {{field.label}}
+									{{field}}
+								{%endfor%}
+								
+								
+       						<button type="submit" class="btn-large">Aplicar Filtro</button>
+							
+							</form>
+							</fieldset>
+						
+							
+							
+							

@@ -1,3 +1,5 @@
+#usr/bin/python
+# -*- encoding: utf-8 -*-
 from abm.funciones import *
 from models import *
 from forms import *
@@ -7,6 +9,9 @@ from django.template import RequestContext
 from django.db.models import Q
 from stronghold.decorators import public
 from django.contrib.auth.decorators import *
+#from dajax.core import Dajax
+#from dajaxice.decorators import dajaxice_register
+#from dajaxice.utils import deserialize_form
 
 nombresFormularios={unicode("titulo"):TituloForm,
 					unicode("especialidad"):EspecialidadForm,
@@ -68,6 +73,7 @@ def lista_(request,model_name):
 	parametros = {}
 	parametros['name'] = model_name
 	parametros['plural_name'] = model_plural_name
+	parametros['fields'] = model()._meta.fields
 	objetos = model.objects.all()
 	return lista(request, objetos,'lista_datos.html', parametros)
 
@@ -158,3 +164,6 @@ def autocompletar_(request,model_name):
 	except KeyError:
 		return HttpResponseRedirect('/404')
 	return autocompletar(request,model)
+
+
+

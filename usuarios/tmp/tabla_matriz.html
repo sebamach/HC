@@ -7,15 +7,15 @@
 <thead>	
 	<tr>
 		<th></th>		
-		{% for i in "xxxxxxxxxx" %}
-		<th>{{forloop.counter}}</th>
+		{% for dato in letras.values %}
+		<th>{{ dato }}</th>
 		{% endfor %}
 	</tr>	
 </thead>
 <tbody>    
     {% for fila in request.session.matriz %}
     <tr>
-		<th>{{forloop.counter}}</th>
+		<th>{{forloop.counter0}}</th>
 		{% for valor in fila %}
 		<td>{{ valor }}</td>
 		{% endfor %}

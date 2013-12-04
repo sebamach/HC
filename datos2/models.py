@@ -3,6 +3,14 @@ from datos.models import *
 from django.contrib.auth.models import User
 from audit_log.models.fields import LastUserField
 from audit_log.models.managers import AuditLog
+class DatosProfesionales (models.Model):
+	especialidad = models.ForeignKey(Especialidad)
+	matriculap = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)
+	matriculan = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)
+	email=	models.EmailField("Correo Electronico")
+	ultimoUsuario = models.ForeignKey(User, editable=False)
+	fechaCreacion= models.DateTimeField(auto_now_add=True)
+	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 
 
 class Persona (models.Model):
@@ -20,8 +28,10 @@ class Persona (models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
+	datos_profesionales= models.ForeignKey(DatosProfesionales, on_delete=models.PROTECT, null=True, blank=True, editable=False)
 	
-	def __str__(self):
+	
+	def __unicode__(self):
 		return self.apellido+', '+self.nombre +' ('+str(self.numero_documento)+')'
 		
 	class meta:
@@ -38,7 +48,7 @@ class Telefono (models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-	def __str__(self):
+	def __unicode__(self):
 		return self.codigo_area+'-'+self.numero		
 
 		
@@ -51,7 +61,7 @@ class Domicilio (models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
-	def __str__(self):
+	def __unicode__(self):
 		return self.direccion
 		
 class FotoPerfil (models.Model):
@@ -61,15 +71,6 @@ class FotoPerfil (models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-class DatosProfesionales (models.Model):
-	persona = models.ForeignKey(Persona, unique= True)
-	especialidad = models.ForeignKey(Especialidad)
-	matriculap = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)
-	matriculan = models.CharField("Matricula Provincial",blank =True, max_length = 6, unique=True)
-	email=	models.EmailField("Correo Electronico")
-	ultimoUsuario = models.ForeignKey(User, editable=False)
-	fechaCreacion= models.DateTimeField(auto_now_add=True)
-	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 
 
 	

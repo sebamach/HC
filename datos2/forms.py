@@ -1,10 +1,17 @@
 from django.forms import ModelForm, Select, TextInput
 from django import forms
 from models import *
+import autocomplete_light
+from clinica.autocomplete_light_registry import *
 
 class PersonaForm(ModelForm):
 	class Meta:
 		model = Persona
+		widgets = {
+			'pais_nacimiento': autocomplete_light.ChoiceWidget('PaisAutocomplete'),
+			'provincia_nacimiento': autocomplete_light.ChoiceWidget('ProvinciaAutocomplete'),
+			'localidad_nacimiento': autocomplete_light.ChoiceWidget('LocalidadAutocomplete'),
+		}	
 		
 class DomicilioForm(ModelForm):
 	class Meta:
@@ -12,7 +19,7 @@ class DomicilioForm(ModelForm):
 		widgets = {
 			'tipo_domicilio': Select(attrs={ 'class':'input-small'}),
 			'direccion': TextInput(attrs={ 'class':'input-medium'}),
-			'localidad': Select(attrs={ 'class':'input-small'}),
+			'localidad': autocomplete_light.ChoiceWidget('LocalidadAutocomplete'),
 		}
 		
 class PartialDomicilioForm(ModelForm):
@@ -48,6 +55,11 @@ class FotoPerfilForm(ModelForm):
 		exclude = ('persona')
 		
 class DatosProfesionalesForm(ModelForm):
+	
 	class Meta:
 		model = DatosProfesionales
 		exclude = ('persona')
+		widgets = {
+			'especialidad': autocomplete_light.ChoiceWidget('EspecialidadAutocomplete'),
+		}	
+		

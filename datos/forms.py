@@ -1,6 +1,10 @@
+#usr/bin/python
+# -*- encoding: utf-8 -*-
 from django.forms import ModelForm, TextInput, Textarea
 from django import forms
 from models import *
+import autocomplete_light
+from clinica.autocomplete_light_registry import *
 
 
 class TituloForm(ModelForm):
@@ -19,7 +23,7 @@ class EspecialidadForm(ModelForm):
 		widgets = {
 			'descripcion': TextInput(attrs={ 'required':'true'}),
 			'observacion': Textarea(),
-			#'titulo':forms.choice{ 'required':'true'},
+			'titulo': autocomplete_light.ChoiceWidget('TituloAutocomplete'),
 		}
 		
 class PaisForm(ModelForm):
@@ -41,19 +45,19 @@ class ProvinciaForm(ModelForm):
 			'descripcion': TextInput(attrs={ 'required':'true'}),
 			'codigo': TextInput(attrs={ 'required':'true'}),
 			'observacion': forms.Textarea,
-			
+			'pais': autocomplete_light.ChoiceWidget('PaisAutocomplete'),
 			
 		}
 
 class LocalidadForm(ModelForm):
+		
+       
 	class Meta:
 		model = Localidad
 		widgets = {
-			'codigo': TextInput(attrs={ 'required':'true'}),
-			'descripcion': TextInput(attrs={ 'required':'true'}),
-			'observacion': forms.Textarea,
-			
-		}
+             'provincia': autocomplete_light.ChoiceWidget('ProvinciaAutocomplete'),
+         }
+
 		
 class TipoDomicilioForm(ModelForm):
 	class Meta:

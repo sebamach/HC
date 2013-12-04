@@ -1,3 +1,5 @@
+#usr/bin/python
+# -*- encoding: utf-8-sig -*-
 from django.db import models
 from datos2.models import *
 from datos.models import *
@@ -11,47 +13,47 @@ from django.utils.formats import get_format
 
 #hoja de evolucion de internado (doctor)
 class Evolucion_doctor(models.Model):
-	persona = models.ForeignKey(Persona, editable=False)
+	persona = models.ForeignKey(Persona, editable=False, related_name="paciente")
 	fecha = models.DateTimeField ()
-	diagnostico=models.ForeignKey(Cie10, blank=True)
+	diagnostico=models.ForeignKey(Cie10)
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES", blank=True)
-	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin
+	firma	= models.ForeignKey(Persona, editable= False,  related_name="firmante")##no editable se uso para probar con admin
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	audit_log = AuditLog()
 	class Meta:
-		ordering = ['-fechaCreacion']
+		ordering = ['-fecha']
 		unique_together =[("persona","fecha","prescripcion",'firma')]
 
 	
 #hoja de evolucion de internado (enfermeros)		
 class Evolucion_enfermeria(models.Model):
-	persona = models.ForeignKey(Persona, editable=False)
+	persona = models.ForeignKey(Persona, editable=False, related_name="paciente enfermeria")
 	fecha = models.DateTimeField ()
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES", blank=True)
-	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin
+	firma	= models.ForeignKey(Persona, editable= False,  related_name="firmante enfermeria")##no editable se uso para probar con admin
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	audit_log = AuditLog()
 	
 	class Meta:
-		ordering = ['-fechaCreacion']
+		ordering = ['-fecha']
 		unique_together =[("persona","fecha","prescripcion",'firma')]
 		
 	
 	
 #hoja de prescripciones y ordenes medicas (enfermeros)
 class Prescripciones_medicas(models.Model):
-	persona = models.ForeignKey(Persona, editable=False)
+	persona = models.ForeignKey(Persona, editable=False,  related_name="paciente prescripciones")
 	fecha = models.DateTimeField ()
 	diagnostico=models.ForeignKey(Cie10, blank=True)
 	prescripcion = models.TextField("PRESCRIPCIONES Y ORDENES MEDICAS", blank=True)
-	firma	= models.ForeignKey(User, editable= False)##no editable se uso para probar con admin
+	firma	= models.ForeignKey(Persona, editable= False,  related_name="firmante prescripcion")##no editable se uso para probar con admin
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	audit_log = AuditLog()
 	class Meta:
-		ordering = ['-fechaCreacion']
+		ordering = ['-fecha']
 		unique_together =[("persona","fecha","prescripcion",'firma')]
 	
 		
@@ -62,10 +64,10 @@ class Foja_quirurgica (models.Model):
 	sino = (    ('S', 'Si'),    ('N', 'No'),   )	
     
     
-	persona = models.ForeignKey(Persona, editable=False, related_name='paciente')
+	persona = models.ForeignKey(Persona, editable=False, related_name='paciente quirurjico')
 	fecha_inicio = models.DateTimeField ()
 	fecha_fin = models.DateTimeField ()
-	firma_cirujano	= models.ForeignKey(User,related_name='firmante', verbose_name='CIRUJANO')
+	firma_cirujano	= models.ForeignKey(Persona,related_name='cirujano firmante', verbose_name='CIRUJANO')
 	ayudantes = models.ManyToManyField(Persona)
 	anestesia_empleada= models.CharField(max_length=100)
 	anestesista= models.ForeignKey(Persona, related_name ='anestesista')

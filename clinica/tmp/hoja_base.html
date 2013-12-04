@@ -18,6 +18,15 @@ $('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
 
 <script type="text/javascript">
 	$(function() {				
+	$('.date').datetimepicker({	
+	controlType: 'select',
+	dateFormat: 'dd-mm-yy',
+	timeFormat: 'HH:mm'
+});
+	});
+</script>
+<script type="text/javascript">
+	$(function() {				
 	$('#datepicker').datetimepicker({	
 	controlType: 'select',
 	dateFormat: 'dd-mm-yy',
@@ -25,10 +34,14 @@ $('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
 });
 	});
 </script>
-
 {%endblock%}
-
+{% block izquierda %}
+<div style="margin-top:100px">
+{%include 'formulario_filtro.html' %}
+</div>
+{% endblock %}
 {%block cuerpo_persona%}
+
 <div style="width: 100%; height: 355px; overflow-y: scroll;">
 		{%for dato in datos%}
 			<blockquote  style= "background-color: #F6F6F7; margin :10px; padding:1px 0px 4px 0px">
@@ -36,14 +49,16 @@ $('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
 						{{dato.fecha|date:'SHORT_DATETIME_FORMAT'}} 
 					</h6>
 					<p>
+					{{dato.diagnostico	}}
 					{% autoescape off%}
 				    {{dato.prescripcion}} 
 					{% endautoescape %}
 					</p> 
-					<small>{{dato_profesional.especialidad.titulo.descripcionReducida}}{{dato_profesional.persona.apllido}}{{dato_profesional.persona.nombre}}
+					<small>{{dato.firma.datos_profesionales.especialidad.titulo.descripcionReducida}} {{dato.firma.apellido}}, {{dato.firma.nombre}}
 					<cite>
 						MN: {{dato_profesional.matriculan}}
 						MP: {{dato_profesional.matriculap}}
+						</br> {{dato.firma.datos_profesionales.especialidad.descripcion}}
 					</cite>
 					</small>
 			</blockquote>
@@ -71,7 +86,7 @@ $('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
 	
 
 
-
+<!-- FORMULARIO DE ALTA-->
 
 <a href="#myModal" role="button" class="btn" data-toggle="modal">Cargar Nuevo</a>
 
@@ -82,30 +97,28 @@ $('#datepicker').datepicker({ dateFormat: "dd-mm-yy" });
 		<h5 id="myModalLabel">Nuevo Registro</h5>
 	</div>
 	<div class="modal-body">
-		<form class="form" action="{{action}}" method="POST" {% if formc.is_multipart %}enctype="multipart/form-data"{% endif %}>
-			{{request.session.coordenadas.fila}},{{request.session.coordenadas.columna}}
-			{% for field in formc.visible_fields %}
-			<div>
-			{{ field }}{% if field.errors %}<span class="help-inline">{{ field.errors.as_text }}</span>{% endif %}
-			</div>
-		{% endfor %}
-			
-		</form>
-		<form class="form" action="{{action}}" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+		<form class="form" action="{{action}}" method="POST">
+		
 		{% csrf_token %}
-		<div class="form-actions">
+			<span class="badge badge-important ">COORDENADAS:  {{request.session.coordenadas.letra}} / {{request.session.coordenadas.fila}}</span>
+			
+			{% for field in formc.visible_fields %}
+				<div>
+					{{ field }}
+				</div>
+			{% endfor %}
 		{% for field in form.visible_fields %}
 		<div>
-			{{ field }}{% if field.errors %}<span class="help-inline">{{ field.errors.as_text }}</span>{% endif %}
+			{{ field }} {{field.label}}
 		</div>
 		{% endfor %}
 		{% for field in form.hidden_fields %}
-			{{ field }}
+				{{ field.label }}: {{ field }}
 		{% endfor %}
         <input class="btn btn-small" type="submit" value="Registrar"/>
-    </div>
-	</form>
-	</div>
+		</div>
+		</form>
+
 	<div class="modal-footer" id='aca'>
 		
     </div>

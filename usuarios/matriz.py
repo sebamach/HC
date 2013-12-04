@@ -1,3 +1,5 @@
+#usr/bin/python
+# -*- encoding: utf-8 -*-
 from stronghold.decorators import public
 from django.contrib.auth.decorators import permission_required
 import string

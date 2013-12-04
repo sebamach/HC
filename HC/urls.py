@@ -1,3 +1,5 @@
+#usr/bin/python
+# -*- encoding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 
@@ -16,6 +18,12 @@ from clinica.views import *
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from ajax_select import urls as ajax_select_urls
+#from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+import autocomplete_light
+# import every app/autocomplete_light_registry.py
+autocomplete_light.autodiscover()
+
+#dajaxice_autodiscover()
 admin.autodiscover()
 
 #profesion_info = {"model": Profesion}
@@ -27,7 +35,7 @@ urlpatterns = patterns('',
 	url(r'^403/$', 'HC.views.sin_permiso'),
 	url(r'^login/$', login_usuario),
     # url(r'^HC/', include('HC.foo.urls')),
-
+	#url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
@@ -36,7 +44,7 @@ urlpatterns = patterns('',
 	#(r'^profesiones/create/$', create_update.create_object, profesion_info),
 	
 	url(r'^carga/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.MEDIA_ROOT,}),
-		
+	url(r'^autocomplete/', include('autocomplete_light.urls')),	
 	
 	url(r'^datos/alta/([a-z]+)$', 'datos.views.alta_'),
 	url(r'^datos/lista/([a-z]+)$', 'datos.views.lista_'),
@@ -54,6 +62,7 @@ urlpatterns = patterns('',
 	url(r'^datos2/alta/([a-z]+)$', 'datos2.views.alta_'),	
 	url(r'^datos2/lista/([a-z]+)$', 'datos2.views.lista_'),
 	url(r'^datos2/editar/([a-z]+)/(\d+)$', 'datos2.views.editar_'),
+	url(r'^datos2/editar/persona/$', 'datos2.views.editar_persona'),
 	url(r'^datos2/eliminar/([a-z]+)/(\d+)$', 'datos2.views.eliminar_'),
 	url(r'^datos2/busqueda/([a-z]+)$', 'datos2.views.busqueda_'),
 	url(r'^datos2/seleccionar/([a-z]+)/(\d+)$', 'datos2.views.seleccionar'),
@@ -62,8 +71,8 @@ urlpatterns = patterns('',
 	
 	url(r'^usuarios/alta/$', nuevo_usuario),	
 	url(r'^usuarios/salir/$', logout_view),
-	url(r'^usuarios/lista/usuario/$', 'usuarios.views.lista_'),		
-	url(r'^usuarios/bloqueo/([a-z]+)/(\d+)$', 'usuarios.views.bloqueo_usuario'),
+	url(r'^usuarios/lista/usuario/$', 'usuarios.views.lista_usuarios'),		
+	url(r'^usuarios/bloqueo/usuario/(\d+)$', 'usuarios.views.bloqueo_usuario'),
 	url(r'^password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'pass_reset.html'}),
 	url(r'password_changed/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'succes.html',}),
 	url(r'^activar/$', 'usuarios.views.activar_usuario'),
@@ -74,6 +83,8 @@ urlpatterns = patterns('',
 	url(r'^clinica/alta/evolucion$', 'clinica.views.alta_evolucion'),
 	url(r'^clinica/lista/enfermeria$', 'clinica.views.listar_enfermeria'),
 	url(r'^clinica/alta/enfermeria$', 'clinica.views.alta_enfermeria'),
+	url(r'^clinica/lista/prescripcion$', 'clinica.views.listar_prescripcion'),
+	url(r'^clinica/alta/prescripcion$', 'clinica.views.alta_prescripcion'),
     
 	   # include the lookup urls
     (r'^admin/lookups/', include(ajax_select_urls)),

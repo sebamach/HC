@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+#usr/bin/python
+# -*- encoding: utf-8 -*-
 
 from models import *
 from datos2.models import *
@@ -52,7 +53,7 @@ def nuevo_usuario(request):
 				if not Perfil.objects.filter(persona=request.session['persona']):
 					usuario = User.objects.create_user(generar_username(request), '', str(clave))
 					usuario.is_active=False
-					usuario.is_superuser=True
+					usuario.is_superuser=False
 					usuario.set_password = clave
 					usuario.save()
 					perfil = formulario_perfil.save(commit=False)
@@ -88,7 +89,7 @@ def nuevo_usuario(request):
 		
 def generar_username(request):
 	inicial = request.session['persona'].nombre[:1]	
-	apellido = request.session['persona'].apellido
+	apellido = request.session['persona'].apellido.replace(" ", "")
 	pre_username = inicial + apellido
 	lista = User.objects.filter(username__startswith=pre_username).order_by('-username')
 	if lista.count()<>0:		
@@ -105,8 +106,21 @@ def generar_username(request):
 		
 	
 @user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')
-def lista_(request):
-	return lista(request,User,'lista_usuarios.html',parametros=['hola'])
+def lista_usuarios(request):	
+	"""
+	llama a la funcion de lista con los parametros correspondientes al nombre de modelo recibido;
+	estos son el modelo, el template a renderizar y los parametros a renderizar
+	que son el nombre en plural y singular del modelo
+	"""
+	model = User
+	model_plural_name = model()._meta.verbose_name_plural
+	model_name = model()._meta.verbose_name
+	parametros = {}
+	parametros['name'] = model_name
+	parametros['plural_name'] = model_plural_name
+	parametros['fields'] = model()._meta.fields
+	objetos = model.objects.all()
+	return lista(request, objetos,'lista_usuarios.html', parametros)
 	
 @user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')
 def editar_(request, modelo, id_user):
@@ -116,14 +130,14 @@ def editar_(request, modelo, id_user):
 		return HttpResponseRedirect('/403')
 		
 @user_passes_test(lambda u: u.groups.filter(name='USUARIOS').count() == 1 , login_url='/403')
-def bloqueo_usuario(request,modelo,id_user):
+def bloqueo_usuario(request, id_user):
 	dato= User.objects.get(id=id_user)
 	if dato.is_active == 1:
 		dato.is_active =0
 	else:
 		dato.is_active=1
 	dato.save()
-	return lista(request,User,'lista_usuarios.html')
+	return HttpResponseRedirect('/usuarios/lista/usuario/')
 	
 @public
 def login_usuario(request):
@@ -135,9 +149,10 @@ def login_usuario(request):
 		if acceso is not None:
 			if acceso.is_active:
 				login(request,acceso)
-				tarjeta = Tarjeta.objects.get(usuario=request.user)
-				matriz = loads(tarjeta.cordenadas.encode('utf-8'))
-				request.session['matriz']=matriz
+				if not usuario=='admin':
+					tarjeta = Tarjeta.objects.get(usuario=request.user)
+					matriz = loads(tarjeta.cordenadas.encode('utf-8'))
+					request.session['matriz']=matriz
 				return HttpResponseRedirect('/')
 			else:
 				login(request,acceso)
@@ -156,6 +171,7 @@ def generar_coordenadas():
 	coordenadas={}
 	coordenadas['fila']= coor_generator2()
 	coordenadas['columna']= coor_generator2()
+	coordenadas['letra']= chr(65+ int(coordenadas['columna']))
 	return coordenadas
 	
 
@@ -181,7 +197,12 @@ def generar_matriz_ascii(matriz):
 	return string
 	
 def generar_matriz_html(request):
-	return render_to_response('tabla_matriz.html', context_instance=RequestContext(request))
+	letras={}
+	for k in range (10):
+		letras [k]=chr(65+k)
+		
+		
+	return render_to_response('tabla_matriz.html',{"letras":letras},context_instance=RequestContext(request) )
 	
 def generar_pdf(html):
     # Función para generar el archivo PDF y devolverlo mediante HttpResponse

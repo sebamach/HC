@@ -1,4 +1,5 @@
 # Django settings for HC project.
+# -*- encoding: utf-8 -*-
 # Identificando la ruta del proyecto
 import os
 import django.conf.global_settings as DEFAULT_SETTINGS
@@ -6,8 +7,11 @@ import django.conf.global_settings as DEFAULT_SETTINGS
 TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
  
 	'django.core.context_processors.request',
+	'django.contrib.messages.context_processors.messages',
+	'django.core.context_processors.request',
 
 )
+
 RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = True
@@ -54,7 +58,7 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = False
+USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
@@ -93,6 +97,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+	#'dajaxice.finders.DajaxiceFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -103,8 +108,9 @@ SECRET_KEY = 'a(n=##8en)ld@3&*=59krb!u_=b7!19lhj@l@q1)^j7n7=j4d!'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+	'django.template.loaders.eggs.Loader',
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -161,6 +167,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 	'HC',
 	'ajax_select',
+	#'dajaxice',
+	'autocomplete_light'
 )
 
 AJAX_LOOKUP_CHANNELS = {

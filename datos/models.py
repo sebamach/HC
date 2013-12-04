@@ -1,3 +1,5 @@
+#usr/bin/python
+# -*- encoding: utf-8-sig -*-
 from django.db import models
 from django.contrib.auth.models import User
 from audit_log.models.fields import LastUserField
@@ -21,7 +23,7 @@ class Titulo(models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion +" ("+ self.descripcionReducida +")"
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -44,7 +46,7 @@ class Especialidad(models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion  +" ("+ self.titulo.descripcionReducida +")"
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -68,7 +70,7 @@ class Pais(models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.codigoAlfa2 = self.codigoAlfa2.upper()
@@ -92,7 +94,7 @@ class Provincia(models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.codigo = self.codigo.upper()
@@ -107,7 +109,7 @@ class Provincia(models.Model):
 
 class Localidad(models.Model):
 	codigo = models.CharField("CODIGO POSTAL", max_length=5,unique=True)
-	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=True)
+	descripcion = models.CharField("DESCRIPCION", max_length=20, unique=False)
 	descripcionReducida = models.CharField("DESCRIPCION REDUCIDA", max_length=5, blank=True)
 	observacion = models.TextField("OBSERVACION", blank=True)
 	provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
@@ -115,8 +117,8 @@ class Localidad(models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-	def __str__(self):
-		return self.descripcion
+	def __unicode__(self):
+		return self.descripcion + " ("+self.provincia.descripcion + "-" + self.provincia.pais.codigoAlfa3 + ")" 
 	"""def save(self):
 		self.codigo = self.codigo.upper()
 		self.descripcion = self.descripcion.upper()
@@ -124,6 +126,7 @@ class Localidad(models.Model):
 		self.observacion = self.observacion.upper()
 		super(Localidad, self).save()"""
 	class Meta:
+		unique_together =[("descripcion","provincia")]
 		ordering = ['descripcion']
 		verbose_name_plural = "Localidades"
 
@@ -137,7 +140,7 @@ class TipoSexo(models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -158,7 +161,7 @@ class TipoDocumento(models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcionReducida
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -180,7 +183,7 @@ class TipoPersona(models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -201,7 +204,7 @@ class TipoDomicilio(models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -222,7 +225,7 @@ class TipoTelefono(models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -241,7 +244,7 @@ class TipoEstadoCivil(models.Model):
 	ultimoUsuario = models.ForeignKey(User, editable=False)
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()
@@ -262,7 +265,7 @@ class Cie10(models.Model):
 	fechaCreacion= models.DateTimeField(auto_now_add=True)
 	fechaModificacion=models.DateTimeField(auto_now=True, null=True)
 	
-	def __str__(self):
+	def __unicode__(self):
 		return self.descripcion
 	"""def save(self):
 		self.descripcion = self.descripcion.upper()

@@ -1,0 +1,67 @@
+.. image:: https://secure.travis-ci.org/yourlabs/django-autocomplete-light.png?branch=master
+
+django-autocomplete-light's purpose is to enable autocompletes quickly and
+properly in a django project: it is the fruit of **years of R&D**. It was
+designed for Django so that every part overridable or reusable independently.
+It is stable, tested, documented and fully supported: it tries to be a good
+neighbour in Django ecosystem.
+
+Features
+--------
+
+Features include:
+
+- charfield, foreign key, many to many autocomplete widgets,
+- generic foreign key, generic many to many autocomplete widgets,
+- remote API backed-autocompletes,
+- django template engine support for autocompletes, enabling you to include
+  images etc ...
+- 100% overridable HTML, CSS, Python and Javascript: there is no variable
+  hidden far down in the scope anywhere.
+- add-another popup supported outside the admin too.
+- keyboard is supported with enter, tab and
+  arrows by default.
+
+Each feature has a live example and is fully documented. It is also designed
+and documented so that you create your own awesome features too.
+
+Resources
+---------
+
+Resources include:
+
+- `**Documentation** graciously hosted
+  <http://django-autocomplete-light.rtfd.org>`_ by `RTFD
+  <http://rtfd.org>`_
+- `Live demo graciously hosted
+  <http://jpic.pythonanywhere.com/>`_ by `PythonAnywhere
+  <http://pythonanywhere.com/>`_,
+- `Video demo graciously hosted
+  <http://youtu.be/fJIHiqWKUXI>`_ by `Youtube
+  <http://youtube.com>`_,
+- `Mailing list graciously hosted
+  <http://groups.google.com/group/yourlabs>`_ by `Google
+  <http://groups.google.com>`_
+- `Git graciously hosted
+  <https://github.com/yourlabs/django-autocomplete-light/>`_ by `GitHub
+  <http://github.com>`_,
+- `Package graciously hosted
+  <http://pypi.python.org/pypi/django-autocomplete-light/>`_ by `PyPi
+  <http://pypi.python.org/pypi>`_,
+- `Continuous integration graciously hosted
+  <http://travis-ci.org/yourlabs/django-autocomplete-light>`_ by `Travis-ci
+  <http://travis-ci.org>`_
+
+VoteWare
+--------
+
+This package is released under the MIT License which is similar to the BSD
+license, you can find a copy in the LICENSE file.
+
+However, I would like to ask that you vote for it on `djangopackages.com
+<https://www.djangopackages.com/grids/g/auto-complete/>`_. The rationnale of my
+request is simple: the more users, the more contributions and the better this
+app will be.
+
+Donations `are welcome too
+<http://www.pledgie.com/campaigns/19798>`_.

@@ -1,19 +1,19 @@
-<h4>Usuarios</h4>
-	<table class='table table-condensed table-striped'>
-		{% for dato in datos %}
-		<tr>
-			<td>
-			  {{dato}}
-			</td>
-			<td>
-				{% if dato.is_active == 0 %}
-				<a href='/usuarios/bloqueo/usuario/{{dato.pk}}' class="label label-success">Desbloquear<i class='icon-pencil icon-white'></i></a>
-				{% else %}
-				<a href='/usuarios/bloqueo/usuario/{{dato.pk}}' class="label label-success">Bloquear   <i class='icon-pencil icon-white'></i></a>
-				{% endif %}
-			</td>
-		</tr>
-		{% endfor %}
-	</table>
-		<a href='/usuarios/alta' role='button' class='btn' data-toggle='modal'>Agregar Nuevo</a>
+{%extends 'lista.html'%}
+{%block modulo1%}usuarios{%endblock%}
+{%block modulo2%}usuarios{%endblock%}
+{%block modulo3%}usuarios{%endblock%}
+{%block modulo4%}usuarios{%endblock%}
+{%block modulo5%}usuarios{%endblock%}
+{%block modulo6%}usuarios{%endblock%}
+{%block linkcancelar%}usuarios{%endblock%}
+
+{% block extralinks %}
+
+{% if dato.9 == 0 %}
+<a href='/usuarios/bloqueo/usuario/{{dato.0}}' class="label label-success">Desbloquear<i class='icon-pencil icon-white'></i></a>
+{% else %}
+<a href='/usuarios/bloqueo/usuario/{{dato.0}}' class="label label-success">Bloquear   <i class='icon-pencil icon-white'></i></a>
+{% endif %}
+
+{% endblock %}
 		

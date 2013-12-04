@@ -1,0 +1,278 @@
+1.2.6 Fixed wrong docstring.
+
+1.2.5 Raise AutocompleteNotRegistered instead of KeyError in
+      Registry.__getitem__.
+
+1.2.4 @g1itch: Support hyphens in generic autocomplete object pks.
+
+1.2.3 @mislavcimpersak: Croatian i18n
+
+1.2.2 @g1itch: Rusisan i18n
+
+1.2.1 @jojax: Fix innefective test on is popup, in autocomplete CreateView
+
+1.2.0 
+
+- Fix #132: removed dead line of code, and restored compatibility with
+  autocomplete-light <1.1.29,
+- Implement #136: AutocompleteModel.split_words
+- Auto-hilight the first choice.
+- Fix #135: AutocompleteModel is not compatible with Django 1.3
+
+1.1.31 Fix #129: Firefox support in JS positioning code.
+
+1.1.30 Polish translation contributed by Michał Pasternak.
+
+1.1.29 Fix #126: support .clone(true) with values.
+
+WARNING: This version broke cloning widgets in some cases. This was reported in
+#132 and fixed in 1.2.0.
+
+1.1.28 Regression fix: hide choiceDetail and choiceUpdate from the autocomplete
+       box.
+
+This fixes the default model template, see in test_project:
+
+    http://localhost:8000/admin/default_template_autocomplete/testmodel/add/
+
+The test_project now includes demos created by Michał Pasternak. Thankssss !
+
+1.1.27 Fix #117: django-grappelli support.
+
+Contributed by Michał Pasternak.
+
+1.1.26
+
+- Fixed #114: Use widget_template attr only when set.
+- Fixed #111: Support jQuery's clone(true).
+
+1.1.25 Fixed #108: generic inline support.
+
+1.1.24
+
+- Allow to override the default AutocompleteModelBase class used by register()
+- Implemented django-hvad support
+
+1.1.23: Removed django from install_requires, fixes pip install -U
+
+1.1.22: Fixed DeprecationWarning for Django 1.5.
+
+1.1.21 Bugfix: box was not re-shown after inputing twice the same string
+of minimumCharacters length.
+
+1.1.20 Click on modal overlay closes the popup windo
+
+1.1.19 Make add-another popup a modality
+
+1.1.18 Center add-another popup on screen
+
+1.1.17 Update fr locale
+
+1.1.16 Django 1.5 compatibility. Credit: Patrick Taylor
+
+1.1.15 Fix #99: choices kwarg was ignored
+
+1.1.14 Bugfix: fetchComplete now ready for textStatus == 'abort'
+
+1.1.13
+
+- Enhancement #78: search_fields more like admin,
+- Bugfix: closed brackets in style.css (thanks papalagichen)
+
+1.1.12 Enabled CSRF.
+
+1.1.11 Fixed dynamic initialisation (ie. inlines).
+
+Bug was caused by a wrong attempt at migrating from jq17 live() to jq19 on().
+
+1.1.10
+
+- Partial autocomplete.js rewrite using ideas from bootstrap-typeahead.js,
+- Use of $.proxy() which allowed to get rid of many scope hacks like: var
+  autocomplete = this;
+- When the maximum number of choices has been selected and the input goes,
+  automatically focus on next visible field,
+- Do not show autocomplete if input has below minCharacters,
+- CSS rewrite/debloat (~-50% SLOCs),
+- Backported typeahead CSS,
+- Backported typeahead autocomplete box placement strategy, hoping to fix IE10
+  mobile support,
+- jQuery 1.9 support (thanks Nicolas Seinlet for the heads up).
+
+1.1.9
+
+- Use explicit check for None value instead of trueness, allowing pk=0 (thanks
+  @ekohl).
+- Widget requires proper url setup (thanks @emesik).
+- Rewrote keypress handler using recent contributions.
+
+Also credits to @ekohl and @emesik for working on keypress handling (added to
+AUTHORS).
+
+1.1.8 (was not released on PyPi)
+
+- Alias autocomplete_light.FixedModelForm to autocomplete_light.ModelForm.
+
+1.1.7 Reset default hideAfter to 500, or click support is half broken.
+
+1.1.6
+
+- Fix #77: autocomplete.js "was not as good as bootstrap typeahea",
+- Fix #72: use prototypes in JS to make code faster
+
+Credit to Gennady (@geaden) for having the guts to criticize autocomplete.js.
+
+1.1.5
+
+- Added blocks in autocomplete_light/widget.html which makes it easier to
+  extend - without boilerplate.
+- Refactor CreateView to make it easier to extend.
+- Added widget.extra_context to make it easier to add context to the widget
+  template.
+
+1.1.4 Enter submits the form is there is no selected choice.
+
+Added to AUTHORS: Ewoud Kohl van Wijngaarden
+
+1.1.3 Fix #71: Refactor HTML generation parts in widget.js
+
+1.1.2
+
+- Fix #68: bug when using TextInput with a custom class,
+- Fix #30: exclude already selected items from model autocomplete,
+- Fix #60: got rid of updateWidgets(),
+- Fix #63: default template for AutocompleteModelTemplate,
+
+1.1.1
+
+- Added option to disable watch of autocompletes hidden selects,
+- Performance improvement on inlines,
+- Provide: autocomplete_light.FixedModelForm,
+- Allow override of form kwarg in modelform_factory,
+- taggit support: warn that commit=False is not supported by TagField,
+- Optimize updateWidgets with the help of DOMNodeInserted,
+- Avoid ImproperlyConfigured when using CreateView directly for popups only,
+- Mentioned python 2.6 support,
+- Django 1.5 support in test project
+
+1.1.0 BC break in templates.
+
+- Fix #51, replaced <div> tags by <span class="div">, this
+  enables rendering the widget in inline tags such as with {{
+  form.as_p }}, and also makes it valid HTML.
+- Fix #58, remove restrictions in choices_for_values.
+- Added to AUTHORS: Marc Hörsken.
+
+1.0.26 Fix #25: Prevent accidental inclusion of autocomplete_light/static.html
+
+1.0.25 Added support for django-taggit in django.contrib.taggit_fields.
+
+1.0.24 Added pt_BR translation, thanks Fábio C. Barrionuevo da Luz.
+
+1.0.23 Added FixedModelForm, workaround django issue #9321.
+
+1.0.22 Fix #46: $.data striped leading zeros from data-value
+
+1.0.21 Added addanother.js, allowing to 'add another' even outside the admin.
+
+1.0.20 Added AutocompleteBase.empty_html_format and spanish translation.
+
+1.0.19 Locale/UX improvements suggested by vibragiel.
+
+1.0.18 CSS Improvements by Michal Pasternak
+
+1.0.17 Fixed a bug with cache concerning keyboard navigation and dependent
+       autocompletes.
+
+1.0.16 Added CharField autocompletion for comma separated values.
+
+1.0.15 Holliday release
+
+       - Fix #31: Workaround firefox form tempering attitude on reload
+       - Fix #33: Rename LICENSE.txt to LICENSE
+       - Fix #34: STATIC_PREFIX changed to {% static %} in templates
+       - Fix #34: Added readme in russian
+       - Fix #36: Removed old javascript-placeholder code from widget.js
+       - Fix #38: Invalid CSS background property
+       - Added to AUTHORS: @balmaster, @vosi, Brant Young (I hope i didn't
+         forget anyone, if so please let me know)
+
+       Note that except for #31, fixes were provided by the community, thanks a
+       lot !
+
+1.0.14 Added support for custom javascript initialization on autocomplete
+       creation, ie. inlines.
+
+       It is backward compatible, but you should migrate your custom javascript
+       to:
+
+       0) Use $(document).bind('yourlabsWidgetReady', ...) instead of
+          $(document).ready(...) to initialize autocomplete widgets
+       1) Use
+          $('.autocomplete-light-widget[data-bootstrap=...]').live('initialize', ...)
+          to instanciate autocomplete widgets instead of
+          $('.autocomplete-light-widget[data-bootstrap=...]').each(...)
+
+       See docs or remote.js for an example.
+
+1.0.13 Use HTML5 placeholder, javascript API support for cloned widgets.
+
+1.0.12 Fixed a crash when yourlabsAutocomplete was called on no element, fixed
+       div id and removed debug statement.
+
+1.0.11 Fugbix AutocompleteRestModel could not rely only on uniques, so it
+       relies on get_or_create_by in that case
+
+1.0.10 Fugbix models with a non numerical pk where not accepted anymore by a
+       spec, the spec was removed from tests and this case is fixed.
+
+1.0.9 Bugfix in remote autocomplete
+
+1.0.8 Fixed keyboard navigation, 1.0.7 broke tests
+
+1.0.7 Tested support for autocompletes that depend on each other.
+
+1.0.6 Enhancement: set class 'autocomplete-light-widget' to autocomplete outer
+                   containers created by widget.js
+
+1.0.5 Enhancement: made rest model local object fetcher less harsh when trying
+                   to find a local object
+
+1.0.4 Bugfix: registering a generic autocomplete with a custom name did not
+              use the custom name
+
+1.0.3 Default search_names to 'name' if the model has a name field
+
+1.0.2 Bugfix & refactor django admin + popup
+
+1.0.1 Slight ergonomy improvement
+
+1.0.0 (Almost) full rewrite
+
+    - "Channel" is gone in favor of "Autocomplete"
+    - More unit tests and new selenium tests
+    - Javascript rewrite, for consistency and documentation
+    - New view on /autocomplete_light/ allows admins to view the registry
+
+0.6 No pity for insane bloat removal
+
+    Backward compatibility break: {% autocomplete_light_static %} was removed.
+    Instead, use {% include 'autocomplete_light/static.html' %} as demonstrated
+    in the "Quick start" documentation.
+
+    Note that autocomplete_light/static.html does not include
+    cities_light/autocomplete.js, so you have to load it yourself now.
+
+0.5
+
+    No backward compatibility break.
+
+    - Bugfix in generic channel example: demonstrate how to query_filter on
+      multiple queryset types.
+    - Bugfix in GenericForeignKeyField: allow none value.
+    - Enhancement: autocomplete_light.contrib.generic_m2m supports generic many
+      to many relations.
+    - Enhancement: allow registration of model with custom channel attributes,
+      this allows to register a model with another "search_name" than "name"
+      without subclassing.
+    - Documentation improvements.

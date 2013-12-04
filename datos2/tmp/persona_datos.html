@@ -12,19 +12,19 @@
 					Identificacion
 				</dt>
 				<dd>
-					{{dato.tipo_documento}}  {{dato.numero_documento}}
+					{{request.session.persona.tipo_documento}}  {{request.session.persona.numero_documento}}
 				</dd>
 				<dt>
 					Fecha de nacimiento
 				</dt>
 				<dd>
-					{{dato.fecha_de_nacimiento}}  
+					{{request.session.persona.fecha_de_nacimiento}}  
 				</dd>
 				<dt>
 					Genero
 				</dt>
 				<dd>
-					{{dato.sexo}}
+					{{request.session.persona.sexo}}
 				</dd>
 				<dd>
 					
@@ -34,25 +34,25 @@
 					
 				</dt>
 				<dd>
-					{{dato.estado_civil}}
+					{{request.session.persona.estado_civil}}
 				</dd>
 				<dt>
 					Lugar de Nacimiento
 				</dt>
 				<dd>
-					{{dato.pais_nacimiento}}
+					{{request.session.persona.pais_nacimiento}}
 				</dd>
 				<dd>
-					{{dato.provincia_nacimiento}}
+					{{request.session.persona.provincia_nacimiento}}
 				</dd>
 				<dd>
-					{{dato.localidad_nacimiento}}
+					{{request.session.persona.localidad_nacimiento}}
 				</dd>
 				<dt>
 					Observaciones
 				</dt>
 				<dd>
-					{{dato.observacion.upper}}
+					{{request.session.persona.observacion.upper}}
 				</dd>
 			</dl>
 		</div>
@@ -69,7 +69,7 @@
 						<a href="#panel-2" data-toggle="tab">Telefonos</a>
 					</li>
 					<li>
-						<a href="#panel-3" data-toggle="tab">Otros Datos</a>
+						<a href="#panel-3" data-toggle="tab">Datos Profesionales</a>
 					</li>
 					<li>
 						<a href="#panel-4" data-toggle="tab">Otros Datos 2</a>
@@ -118,7 +118,7 @@
 					<div class="tab-pane" id="panel-4">
 						
 						<p>
-							<a href='/datos2/editar/persona/{{dato.pk}}' class="btn btn-info btn-mini">Agregar<i class='icon-pencil icon-white'></i></a>
+							<a href='/datos2/editar/persona/' class="btn btn-info btn-mini">Agregar<i class='icon-pencil icon-white'></i></a>
 							<ul>
 								nada por aca
 							</ul> 

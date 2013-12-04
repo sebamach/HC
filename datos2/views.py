@@ -165,18 +165,16 @@ def eliminar_(request, model_name, id):
 	
 		
 @user_passes_test(lambda u: u.groups.filter(name='PERSONAS').count() == 1 , login_url='/403')	
-def editar_persona(request, id_persona):
-	
-	DomicilioFormSet=modelformset_factory(Domicilio, extra=0, form=DomicilioForm, exclude=('persona','observacion',))	
-	TelefonoFormSet=modelformset_factory(Telefono, form=TelefonoForm, extra=0, exclude=('persona','observacion',))	
+def editar_persona(request):
 	if request.method=='POST':
-		persona = Persona.objects.get(id=id_persona)
-		formulario1=PersonaForm(request.POST, instance = persona)			
+		formulario1=PersonaForm(request.POST, instance = request.session['persona'])			
 		if formulario1.is_valid():
-			persona=formulario1.save()				
-			return HttpResponseRedirect("/datos2/seleccionar/persona/"+request.session['persona'])
+			persona=formulario1.save(commit=False)
+			persona.ultimoUsuario = request.user
+			persona.save()
+			return HttpResponseRedirect("/datos2/seleccionar/persona/"+str(request.session['persona'].id))
 	else:
-		persona = Persona.objects.get(id=id_persona)
+		persona = Persona.objects.get(id=request.session['persona'].id)
 		formulario1=PersonaForm(instance = persona)
 		
 	return render_to_response('formulario_edit_personas.html', {'formulario': formulario1, 'nombre': Persona._meta.verbose_name_plural, 'n': Persona._meta.verbose_name,}, context_instance=RequestContext(request))
@@ -256,9 +254,11 @@ def cargar_datos_profesionales(request):
 		formulario=DatosProfesionalesForm(request.POST)
 		if formulario.is_valid():
 			profesional=formulario.save(commit=False)
-			profesional.persona= request.session['persona']
+			persona= request.session['persona']
 			profesional.ultimoUsuario= request.user
 			profesional.save()
+			persona.datos_profesionales = profesional
+			persona.save()
 			messages.add_message(request, messages.ERROR, 'Datos Profesionales asignados correctamente para '+ str(request.session['persona']) )
 			return HttpResponseRedirect('/datos2/seleccionar/persona/'+str(request.session['persona'].id))
 	else:

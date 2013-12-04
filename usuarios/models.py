@@ -1,3 +1,5 @@
+#usr/bin/python
+# -*- encoding: utf-8 -*-
 from django.db import models
 from datos2.models import Persona
 from django.contrib.auth.models import User

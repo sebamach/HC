@@ -47,8 +47,10 @@ $(function()
 	<table class='table table-condensed table-striped '  id='table'>
 		<thead>
 			<tr> 
-			{% for field in parametros.fields %}
-			<th>{{field.verbose_name}}</th> 
+			{% for field in headers %}
+			{% if not forloop.counter0 == 0 %}
+			<th>{{field}}</th> 
+			{% endif %}
 			{% endfor %}
 			</tr> 
 		</thead>
@@ -59,14 +61,17 @@ $(function()
 			<tr>
 				
 				{% for value in dato %}
+				{% if not forloop.counter0 == 0 %}
 				<td>
 				  {{value}}
 				</td>
+				{% endif %}
 				{% endfor %}				
 				{% if not parametros.name == 'persona' %}
 				<td>
 					<a href='/{%block modulo1%}{%endblock%}/editar/{{parametros.name}}/{{dato.0}}' class="label label-success">Editar<i class='icon-pencil icon-white'></i></a>
 					<a href='/{%block modulo2%}{%endblock%}/eliminar/{{parametros.name}}/{{dato.0}}' class="label label-important">Eliminar<i class='icon-trash icon-white'></i></a>
+					{%block extralinks %} {% endblock %}
 				</td>
 				{% else %}
 				<td>
@@ -107,8 +112,8 @@ $(function()
 {% endif%}
 
 
-	
+	{% block agregar %}
 		<a href='/{%block modulo3%}{%endblock%}/alta/{{parametros.name}}' role='button' class='btn' data-toggle='modal'>Agregar Nuevo</a>
-
+	{% endblock %}
 
 

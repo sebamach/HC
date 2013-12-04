@@ -1,3 +1,5 @@
+#usr/bin/python
+# -*- encoding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
@@ -39,12 +41,20 @@ def lista(request, objetos, template_to_render, parametros):
 	"""	
 	#creo "tabla de valores" del modelo, un arreglo conteniendo un arreglo por objecto, que contiene 
 	#los valores de los atributos del modelo, para ser recorrido facilmente en el template
+	
 	registros=[]
 	for objeto in objetos:
 		valores=[]
 		for field in objeto._meta.fields:
-			valores.append(getattr(objeto,field.name))
+			if (field.editable and not (field.column == 'password')):
+				valores.append(getattr(objeto,field.name))
 		registros.append(valores)
+
+	headers=[]
+	for field in objetos[0]._meta.fields:
+		if (field.editable and not (field.column == 'password')):
+			headers.append(field.verbose_name)
+	
 
 	#creo paginador dentro del arreglo
 	paginator = Paginator(registros, 5) # Show 25 contacts per page
@@ -56,7 +66,7 @@ def lista(request, objetos, template_to_render, parametros):
 	except EmptyPage:       
 		datos = paginator.page(paginator.num_pages)		
 
-	return render_to_response(template_to_render, {'datos': datos, 'parametros': parametros,},
+	return render_to_response(template_to_render, {'headers': headers, 'datos': datos, 'parametros': parametros,},
 		context_instance=RequestContext(request))
 
 
