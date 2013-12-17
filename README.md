@@ -1,7 +1,7 @@
 HC
 ==
 
-- log de auditoria de eventos. registrar: usuario, fecha de consulta, ip, string donde ponemos info como filtros aplicados
+ ya esta - log de auditoria de eventos. registrar: usuario, fecha de consulta, ip, string donde ponemos info como filtros aplicados
 - controlar la creacion de usuarios.
 - hacer pantalla de epicrisis tipo palel higienico con todos los post entre las fechas de la epicrisis
 - crear hoja de guardia
